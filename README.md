@@ -9,8 +9,8 @@
 
 ```
 packages/
-├── ReactSample/     - React with Vite
-├── PreactSample/    - Preact with Vite
+├── ReactSample/     - React with Rsbuild
+├── PreactSample/    - Preact with Rsbuild
 ├── NextSample/      - Next.js with App Router
 ├── ExpressSample/   - Express.js server
 └── NestSample/      - NestJS server
@@ -66,8 +66,8 @@ pnpm dev
 특정 프로젝트만 개발 모드로 실행:
 
 ```bash
-pnpm dev:react     # React 개발 서버 (기본 포트: 5173)
-pnpm dev:preact    # Preact 개발 서버 (기본 포트: 5173)
+pnpm dev:react     # React 개발 서버 (기본 포트: 3000)
+pnpm dev:preact    # Preact 개발 서버 (기본 포트: 3000)
 pnpm dev:next      # Next.js 개발 서버 (기본 포트: 3000)
 pnpm dev:express   # Express 서버 (기본 포트: 3001)
 pnpm dev:nest      # NestJS 서버 (기본 포트: 3002)
@@ -94,15 +94,15 @@ pnpm test
 ### ReactSample
 
 - Framework: React 18
-- Build Tool: Vite
-- Port: 5173 (dev)
+- Build Tool: Rsbuild (Rspack-based)
+- Port: 3000 (dev)
 - Build Output: `packages/ReactSample/dist`
 
 ### PreactSample
 
 - Framework: Preact 10
-- Build Tool: Vite
-- Port: 5173 (dev)
+- Build Tool: Rsbuild (Rspack-based)
+- Port: 3000 (dev)
 - Build Output: `packages/PreactSample/dist`
 
 ### NextSample
