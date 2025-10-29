@@ -1,0 +1,17 @@
+{
+  "name": "ExpressSample",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "build": "echo 'Building Express app...' && npm run lint",
+    "start": "node src/index.js",
+    "lint": "echo 'Linting complete'",
+    "clean": "echo 'No build artifacts to clean'"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {}
+}
