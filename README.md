@@ -3,7 +3,7 @@
 
 ## Monorepo Structure
 
-이 저장소는 npm workspaces를 사용한 모노레포로 구성되어 있습니다. 다양한 웹 프레임워크와 라이브러리의 샘플 프로젝트를 포함합니다.
+이 저장소는 pnpm workspaces를 사용한 모노레포로 구성되어 있습니다. 다양한 웹 프레임워크와 라이브러리의 샘플 프로젝트를 포함합니다.
 
 ### Projects
 
@@ -21,14 +21,14 @@ packages/
 ### Prerequisites
 
 - Node.js 18.x or higher
-- npm 9.x or higher
+- pnpm 8.x or higher
 
 ### Installation
 
 프로젝트 루트에서 의존성을 설치합니다:
 
 ```bash
-npm install
+pnpm install
 ```
 
 이 명령은 모든 워크스페이스의 의존성을 자동으로 설치합니다.
@@ -40,7 +40,7 @@ npm install
 모든 프로젝트를 한번에 빌드:
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ### Build Individual Projects
@@ -48,11 +48,11 @@ npm run build
 특정 프로젝트만 빌드:
 
 ```bash
-npm run build:react     # React 프로젝트 빌드
-npm run build:preact    # Preact 프로젝트 빌드
-npm run build:next      # Next.js 프로젝트 빌드
-npm run build:express   # Express 프로젝트 빌드
-npm run build:nest      # Nest 프로젝트 빌드
+pnpm build:react     # React 프로젝트 빌드
+pnpm build:preact    # Preact 프로젝트 빌드
+pnpm build:next      # Next.js 프로젝트 빌드
+pnpm build:express   # Express 프로젝트 빌드
+pnpm build:nest      # Nest 프로젝트 빌드
 ```
 
 ### Development Mode
@@ -60,17 +60,17 @@ npm run build:nest      # Nest 프로젝트 빌드
 모든 프로젝트를 개발 모드로 실행 (병렬):
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 특정 프로젝트만 개발 모드로 실행:
 
 ```bash
-npm run dev:react     # React 개발 서버 (기본 포트: 5173)
-npm run dev:preact    # Preact 개발 서버 (기본 포트: 5173)
-npm run dev:next      # Next.js 개발 서버 (기본 포트: 3000)
-npm run dev:express   # Express 서버 (기본 포트: 3001)
-npm run dev:nest      # NestJS 서버 (기본 포트: 3002)
+pnpm dev:react     # React 개발 서버 (기본 포트: 5173)
+pnpm dev:preact    # Preact 개발 서버 (기본 포트: 5173)
+pnpm dev:next      # Next.js 개발 서버 (기본 포트: 3000)
+pnpm dev:express   # Express 서버 (기본 포트: 3001)
+pnpm dev:nest      # NestJS 서버 (기본 포트: 3002)
 ```
 
 ### Clean Build Artifacts
@@ -78,7 +78,7 @@ npm run dev:nest      # NestJS 서버 (기본 포트: 3002)
 빌드 결과물 정리:
 
 ```bash
-npm run clean
+pnpm clean
 ```
 
 ### Testing
@@ -86,7 +86,7 @@ npm run clean
 테스트 실행:
 
 ```bash
-npm test
+pnpm test
 ```
 
 ## Project Details
@@ -132,14 +132,20 @@ npm test
 워크스페이스 특정 명령 실행:
 
 ```bash
-npm run <script> -w <workspace-name>
+pnpm --filter <workspace-name> <script>
 ```
 
 예시:
 
 ```bash
-npm run build -w ReactSample
-npm install axios -w ExpressSample
+pnpm --filter ReactSample build
+pnpm --filter ExpressSample add axios
+```
+
+모든 워크스페이스에서 실행:
+
+```bash
+pnpm -r <script>  # recursive
 ```
 
 ## License
