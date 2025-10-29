@@ -5,6 +5,8 @@
 
 이 저장소는 pnpm workspaces를 사용한 모노레포로 구성되어 있습니다. 다양한 웹 프레임워크와 라이브러리의 샘플 프로젝트를 포함합니다.
 
+**모든 프로젝트는 TypeScript로 작성되었습니다.**
+
 ### Projects
 
 ```
@@ -94,6 +96,7 @@ pnpm test
 ### ReactSample
 
 - Framework: React 18
+- Language: TypeScript
 - Build Tool: Rsbuild (Rspack-based)
 - Port: 3000 (dev)
 - Build Output: `packages/ReactSample/dist`
@@ -101,6 +104,7 @@ pnpm test
 ### PreactSample
 
 - Framework: Preact 10
+- Language: TypeScript
 - Build Tool: Rsbuild (Rspack-based)
 - Port: 3000 (dev)
 - Build Output: `packages/PreactSample/dist`
@@ -115,8 +119,9 @@ pnpm test
 ### ExpressSample
 
 - Framework: Express.js
-- Language: JavaScript (ES Modules)
+- Language: TypeScript
 - Port: 3001 (dev/prod)
+- Build Output: `packages/ExpressSample/dist`
 - Features: JSON API, Health check endpoint
 
 ### NestSample

@@ -2,16 +2,19 @@
   "name": "ExpressSample",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "build": "echo 'Building Express app...' && npm run lint",
-    "start": "node src/index.js",
-    "lint": "echo 'Linting complete'",
-    "clean": "echo 'No build artifacts to clean'"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "express": "^4.19.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.12",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
 }
