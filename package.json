@@ -1,0 +1,33 @@
+{
+  "name": "web-playground",
+  "version": "1.0.0",
+  "description": "웹 기술을 탐색하고 실험하기 위한 개인 공간입니다.",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r run build",
+    "build:react": "pnpm --filter ReactSample run build",
+    "build:preact": "pnpm --filter PreactSample run build",
+    "build:next": "pnpm --filter NextSample run build",
+    "build:express": "pnpm --filter ExpressSample run build",
+    "build:nest": "pnpm --filter NestSample run build",
+    "dev": "pnpm -r run dev",
+    "dev:react": "pnpm --filter ReactSample run dev",
+    "dev:preact": "pnpm --filter PreactSample run dev",
+    "dev:next": "pnpm --filter NextSample run dev",
+    "dev:express": "pnpm --filter ExpressSample run dev",
+    "dev:nest": "pnpm --filter NestSample run dev",
+    "clean": "pnpm -r run clean",
+    "test": "pnpm -r run test"
+  },
+  "keywords": [
+    "monorepo",
+    "react",
+    "preact",
+    "next",
+    "express",
+    "nest"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {}
+}
