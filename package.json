@@ -5,12 +5,14 @@
   "private": true,
   "scripts": {
     "build": "pnpm -r run build",
+    "build:entry": "pnpm --filter entry run build",
     "build:react": "pnpm --filter ReactSample run build",
     "build:preact": "pnpm --filter PreactSample run build",
     "build:next": "pnpm --filter NextSample run build",
     "build:express": "pnpm --filter ExpressSample run build",
     "build:nest": "pnpm --filter NestSample run build",
     "dev": "pnpm -r run dev",
+    "dev:entry": "pnpm --filter entry run dev",
     "dev:react": "pnpm --filter ReactSample run dev",
     "dev:preact": "pnpm --filter PreactSample run dev",
     "dev:next": "pnpm --filter NextSample run dev",
@@ -21,6 +23,7 @@
   },
   "keywords": [
     "monorepo",
+    "entry",
     "react",
     "preact",
     "next",
