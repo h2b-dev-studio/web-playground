@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",
-    "start": "node ../../dist/nest-sample/main",
-    "start:prod": "node ../../dist/nest-sample/main",
-    "clean": "rm -rf ../../dist/nest-sample"
+    "start": "node dist/main",
+    "start:prod": "node dist/main",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.10",

@@ -6,7 +6,7 @@
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "clean": "rm -rf ../../dist/preact-sample"
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "preact": "^10.23.1"

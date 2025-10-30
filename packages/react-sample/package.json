@@ -6,7 +6,7 @@
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "clean": "rm -rf ../../dist/react-sample"
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "react": "^18.3.1",

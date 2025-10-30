@@ -4,7 +4,8 @@
   "description": "웹 기술을 탐색하고 실험하기 위한 개인 공간입니다.",
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && pnpm -r run build",
+    "build": "pnpm -r run build && pnpm run copy-dist",
+    "copy-dist": "rm -rf dist && mkdir -p dist && cp -r entry/dist/* dist/ && mkdir -p dist/react-sample && cp -r packages/react-sample/dist/* dist/react-sample/ && mkdir -p dist/preact-sample && cp -r packages/preact-sample/dist/* dist/preact-sample/ && mkdir -p dist/express-sample && cp -r packages/express-sample/dist/* dist/express-sample/ && mkdir -p dist/nest-sample && cp -r packages/nest-sample/dist/* dist/nest-sample/ && mkdir -p dist/next-sample && cp -r packages/next-sample/.next/* dist/next-sample/",
     "build:entry": "pnpm --filter entry run build",
     "build:react": "pnpm --filter react-sample run build",
     "build:preact": "pnpm --filter preact-sample run build",
@@ -18,7 +19,7 @@
     "dev:next": "pnpm --filter next-sample run dev",
     "dev:express": "pnpm --filter express-sample run dev",
     "dev:nest": "pnpm --filter nest-sample run dev",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && pnpm -r run clean",
     "test": "pnpm -r run test"
   },
   "keywords": [
