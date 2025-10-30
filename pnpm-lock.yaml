@@ -8,6 +8,15 @@ importers:
 
   .: {}
 
+  entry:
+    devDependencies:
+      typescript:
+        specifier: ^5.5.4
+        version: 5.9.3
+      vite:
+        specifier: ^5.4.0
+        version: 5.4.21(@types/node@20.19.24)(terser@5.44.0)
+
   packages/ExpressSample:
     dependencies:
       express:
@@ -129,15 +138,6 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.9.3
-
-  packages/entry:
-    devDependencies:
-      typescript:
-        specifier: ^5.5.4
-        version: 5.9.3
-      vite:
-        specifier: ^5.4.0
-        version: 5.4.21(@types/node@20.19.24)(terser@5.44.0)
 
 packages:
 
