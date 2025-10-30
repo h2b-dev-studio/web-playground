@@ -140,10 +140,35 @@ Configuration is in `playwright.config.ts`:
 
 ## Continuous Integration
 
+### GitHub Actions Workflows
+
+Two workflows are configured for automated testing:
+
+#### 1. Playwright Tests (`playwright.yml`)
+**Triggers:** Push to main/master, Pull Requests
+**Features:**
+- Runs on all browsers (Chromium, Firefox, WebKit)
+- Sharded execution (2 parallel jobs) for faster results
+- Uploads test reports and artifacts
+- Merges reports from all shards
+- Full test coverage across all browsers
+
+#### 2. PR Checks (`pr-checks.yml`)
+**Triggers:** Pull Requests only
+**Features:**
+- Fast feedback (Chromium only)
+- Runs on every PR commit
+- Uploads reports only on failure
+- Optimized for quick validation
+
+### CI Configuration
+
 The tests are configured to run in CI environments with:
 - `forbidOnly` - Prevents `.only` tests from running
 - `retries: 2` - Retries failed tests twice
 - `workers: 1` - Runs tests serially in CI
+- Automatic server startup for entry, Express, and NestJS
+- Artifact retention (30 days for full runs, 7 days for PRs)
 
 ## Troubleshooting
 
