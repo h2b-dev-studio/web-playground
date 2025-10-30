@@ -39,6 +39,7 @@
   ],
   "author": "",
   "license": "MIT",
+  "packageManager": "pnpm@10.19.0",
   "devDependencies": {
     "@playwright/test": "^1.56.1"
   }
