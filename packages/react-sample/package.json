@@ -1,12 +1,12 @@
 {
-  "name": "ReactSample",
+  "name": "react-sample",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf ../../dist/react-sample"
   },
   "dependencies": {
     "react": "^18.3.1",

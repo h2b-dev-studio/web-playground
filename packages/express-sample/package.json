@@ -1,12 +1,12 @@
 {
-  "name": "ExpressSample",
+  "name": "express-sample",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
-    "clean": "rm -rf dist"
+    "start": "node ../../dist/express-sample/index.js",
+    "clean": "rm -rf ../../dist/express-sample"
   },
   "dependencies": {
     "express": "^4.19.2"

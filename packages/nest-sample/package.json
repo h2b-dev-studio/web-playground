@@ -1,13 +1,13 @@
 {
-  "name": "NestSample",
+  "name": "nest-sample",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "nest start --watch",
     "build": "nest build",
-    "start": "node dist/main",
-    "start:prod": "node dist/main",
-    "clean": "rm -rf dist"
+    "start": "node ../../dist/nest-sample/main",
+    "start:prod": "node ../../dist/nest-sample/main",
+    "clean": "rm -rf ../../dist/nest-sample"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.10",

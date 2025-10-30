@@ -1,12 +1,12 @@
 {
-  "name": "PreactSample",
+  "name": "preact-sample",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf ../../dist/preact-sample"
   },
   "dependencies": {
     "preact": "^10.23.1"
