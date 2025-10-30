@@ -17,7 +17,7 @@ importers:
         specifier: ^5.4.0
         version: 5.4.21(@types/node@20.19.24)(terser@5.44.0)
 
-  packages/ExpressSample:
+  packages/express-sample:
     dependencies:
       express:
         specifier: ^4.19.2
@@ -36,7 +36,7 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
-  packages/NestSample:
+  packages/nest-sample:
     dependencies:
       '@nestjs/common':
         specifier: ^10.3.10
@@ -73,7 +73,7 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
-  packages/NextSample:
+  packages/next-sample:
     dependencies:
       next:
         specifier: ^14.2.5
@@ -98,7 +98,7 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
-  packages/PreactSample:
+  packages/preact-sample:
     dependencies:
       preact:
         specifier: ^10.23.1
@@ -114,7 +114,7 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
-  packages/ReactSample:
+  packages/react-sample:
     dependencies:
       react:
         specifier: ^18.3.1

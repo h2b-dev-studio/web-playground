@@ -1,20 +1,20 @@
 {
-  "name": "NextSample",
+  "name": "react-sample",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "clean": "rm -rf .next out"
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "next": "^14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.14.12",
+    "@rsbuild/core": "^1.1.0",
+    "@rsbuild/plugin-react": "^1.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.4"
