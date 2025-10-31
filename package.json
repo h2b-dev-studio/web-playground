@@ -20,7 +20,13 @@
     "dev:express": "pnpm --filter express-sample run dev",
     "dev:nest": "pnpm --filter nest-sample run dev",
     "clean": "rm -rf dist && pnpm -r run clean",
-    "test": "pnpm -r run test"
+    "test": "pnpm -r run test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:codegen": "playwright codegen http://localhost:5173"
   },
   "keywords": [
     "monorepo",
@@ -33,5 +39,8 @@
   ],
   "author": "",
   "license": "MIT",
-  "devDependencies": {}
+  "packageManager": "pnpm@10.19.0",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
 }
