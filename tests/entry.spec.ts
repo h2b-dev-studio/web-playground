@@ -107,13 +107,13 @@ test.describe('Entry Page - Landing Page', () => {
   test('Express Sample card should have correct link', async ({ page }) => {
     const expressCard = page.locator('.project-card').filter({ hasText: 'Express Sample' });
     const link = expressCard.locator('a');
-    await expect(link).toHaveAttribute('href', 'http://localhost:3001');
+    await expect(link).toHaveAttribute('href', '/express-sample/index.html');
   });
 
   test('NestJS Sample card should have correct link', async ({ page }) => {
     const nestCard = page.locator('.project-card').filter({ hasText: 'Nest.js Sample' });
     const link = nestCard.locator('a');
-    await expect(link).toHaveAttribute('href', 'http://localhost:3002');
+    await expect(link).toHaveAttribute('href', '/nest-sample/index.html');
   });
 });
 
