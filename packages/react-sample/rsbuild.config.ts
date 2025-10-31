@@ -16,5 +16,6 @@ export default defineConfig({
       root: '../../dist/react-sample',
     },
     cleanDistPath: true,
+    assetPrefix: './',
   },
 });

@@ -16,5 +16,6 @@ export default defineConfig({
       root: '../../dist/preact-sample',
     },
     cleanDistPath: true,
+    assetPrefix: './',
   },
 });
