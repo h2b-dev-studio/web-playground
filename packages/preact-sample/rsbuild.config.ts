@@ -11,4 +11,11 @@ export default defineConfig({
   html: {
     template: './index.html',
   },
+  output: {
+    distPath: {
+      root: '../../dist/preact-sample',
+    },
+    cleanDistPath: true,
+    assetPrefix: './',
+  },
 });
