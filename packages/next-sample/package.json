@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && rm -rf ../../dist/next-sample && mv out ../../dist/next-sample",
     "start": "next start",
-    "clean": "rm -rf .next out"
+    "clean": "rm -rf .next out ../../dist/next-sample"
   },
   "dependencies": {
     "next": "^14.2.5",
