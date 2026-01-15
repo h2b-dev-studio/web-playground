@@ -5,7 +5,7 @@ date: 2025-01-14
 version: 1.0.0
 status: draft
 inherits:
-  - spec/foundation.md@1.0.0
+  - spec/foundation.md@1.1.0
 changelog:
   - v1.0.0: Initial foundation for Pattern Gallery + Props Playground
 ---
