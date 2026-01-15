@@ -61,13 +61,7 @@ For each design item, verify:
 
 ### Pass
 
-```yaml
-# Update state
-items:
-  REQ-001:
-    status: verified
-    verified_at: 2025-01-15T10:00:00Z
-```
+Update document status in frontmatter to `status: verified`.
 
 ### Fail - Self-Resolvable
 
@@ -145,14 +139,12 @@ gaps:
 ## State Update
 
 After verification:
-
 ```yaml
 documents:
-  requirements:
-    status: verified  # all items passed
-    verified_at: 2025-01-15T10:00:00Z
-  design:
-    status: partial   # some gaps remain
+  requirements: { status: verified }
+  design: { status: draft }  # or verified if passed
+gaps:
+  - { id: GAP-001, severity: major, description: "..." }
 ```
 
 ## Verification

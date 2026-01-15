@@ -93,10 +93,7 @@ Track which anchors are addressed:
 
 ```yaml
 documents:
-  requirements:
-    status: partial
-    items:
-      REQ-001: { status: draft, owner: agent-a }
+  requirements: { status: draft, version: 1.0.0 }
 ```
 
 ## Example: Package Requirements
@@ -172,26 +169,18 @@ After writing requirements:
 
 ## State Update
 
+After all requirements verified:
 ```yaml
 documents:
-  requirements:
-    status: partial  # or verified if all items verified
-    items:
-      REQ-001: { status: verified }
-      REQ-002: { status: draft }
+  requirements: { status: verified, version: 1.0.0 }
+current_phase: design
 ```
 
-## Handoff
+## Next Phase
 
-Trigger handoff to design phase when:
-- All requirements status is `verified`
-- Coverage matrix complete
-- No gaps in alignment
-
-Include in handoff:
-- List of verified requirements
-- Coverage matrix summary
-- Any unaddressed anchors (as gaps)
+When requirements are verified, proceed to design:
+- Create design items with `@derives` links to requirements
+- Document significant decisions as DEC-NNN
 
 ## Reference
 

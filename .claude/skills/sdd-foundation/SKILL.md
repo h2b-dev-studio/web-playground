@@ -68,9 +68,7 @@ After creating, update `.sdd/state.yaml`:
 
 ```yaml
 documents:
-  foundation:
-    status: draft
-    owner: {your-agent-id}
+  foundation: { status: draft, version: 1.0.0 }
 ```
 
 ## Example: Package Foundation
@@ -133,24 +131,18 @@ After creating Foundation:
 
 ## State Update
 
+After verification passes:
 ```yaml
-# .sdd/state.yaml
 documents:
-  foundation:
-    status: draft  # change to verified after verification passes
-    owner: {agent-id}
+  foundation: { status: verified, version: 1.0.0 }
+current_phase: requirements
 ```
 
-## Handoff
+## Next Phase
 
-Trigger handoff to requirements phase when:
-- Foundation status is `verified`
-- All anchors defined and specific
-
-Include in handoff:
-- List of anchors defined
-- Any scope decisions made
-- Recommended requirements to address each anchor
+When foundation is verified, proceed to requirements:
+- Create requirements with `@aligns-to` links to each anchor
+- Ensure every anchor has at least one requirement
 
 ## Reference
 

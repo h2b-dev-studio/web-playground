@@ -96,10 +96,7 @@ Formal ASM record when:
 
 ```yaml
 documents:
-  design:
-    status: draft
-    items:
-      design.component-structure: { status: draft }
+  design: { status: draft, version: 1.0.0 }
 ```
 
 ## Example: Package Design
@@ -164,26 +161,17 @@ After writing design:
 
 ## State Update
 
+After design verified:
 ```yaml
 documents:
-  design:
-    status: draft
-    items:
-      design.build-tooling: { status: verified }
-      design.state-management: { status: draft }
+  design: { status: verified, version: 1.0.0 }
 ```
 
-## Handoff
+## Next Phase
 
-Trigger handoff when:
-- All design items status is `verified`
-- All DEC-NNN records complete
-- No orphan design items (missing @derives)
-
-Include in handoff:
-- Design decisions summary
-- Assumptions that need monitoring
-- Implementation order recommendation
+When design is verified, ready for implementation:
+- All design items have traceability to requirements
+- Decisions documented for future reference
 
 ## Reference
 
