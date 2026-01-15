@@ -1,6 +1,14 @@
+/**
+ * Entry Page E2E Tests
+ *
+ * Verifies REQ-002: Entry Page - Landing page lists and links to all sample packages.
+ *
+ * @derives REQ-002
+ * @aligns-to SCOPE-SHOWCASE, AUDIENCE-DEVELOPER
+ */
 import { test, expect } from '@playwright/test';
 
-test.describe('Entry Page - Landing Page', () => {
+test.describe('Entry Page - Landing Page (REQ-002)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
@@ -117,7 +125,7 @@ test.describe('Entry Page - Landing Page', () => {
   });
 });
 
-test.describe('Entry Page - Responsive Design', () => {
+test.describe('Entry Page - Responsive Design (AUDIENCE-DEVELOPER)', () => {
   test('should display single column layout on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 }); // iPhone SE
     await page.goto('/');

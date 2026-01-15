@@ -1,3 +1,12 @@
+/**
+ * Preact Sample E2E Tests
+ *
+ * Verifies REQ-003: Package Standards - each sample demonstrates idiomatic patterns.
+ * Tests the Preact 10 counter application built with Rsbuild.
+ *
+ * @derives REQ-003
+ * @aligns-to QUALITY-IDIOMATIC, QUALITY-TESTED, SCOPE-SHOWCASE
+ */
 import { test, expect } from '@playwright/test';
 
 test.describe('Preact Sample - Counter Component', () => {
