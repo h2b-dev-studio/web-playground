@@ -1,0 +1,15 @@
+version: 1.0.0
+
+documents:
+  foundation:
+    status: verified
+    version: 1.0.0
+    owner: human
+  requirements:
+    status: verified
+    version: 1.1.0
+    owner: human
+  design:
+    status: verified
+    version: 1.0.0
+    owner: unassigned
