@@ -1,182 +1,261 @@
 ---
 name: sdd-design
 description: |
-  Create Design documents with decisions and assumptions for web-playground.
-  Use when: defining implementation, documenting architecture choices.
-  Triggers: "create design", "write design", "sdd design"
+  Orchestrate design document creation using specialist skills.
+  Use when: starting design phase, merging specialist outputs, resolving design conflicts.
+  Triggers: "create design", "design phase", "merge design", "design skeleton"
 ---
 
-# Web Playground Design
+# SDD Design Orchestrator
 
-Create Design documents that define implementation with traceable decisions.
+Coordinate specialist skills to produce a complete design document.
 
-## Prerequisites
+## Role
 
-**Requirements must be verified before writing design.**
+| Do | Don't |
+|----|-------|
+| Create skeleton structure | Write implementation details |
+| Assign sections to specialists | Make design decisions |
+| Map REQs to sections | Choose libraries or patterns |
+| Merge specialist outputs | Override specialist decisions |
+| Resolve conflicts between specialists | Skip specialist review |
 
-Check `.sdd/state.yaml`:
-```yaml
-documents:
-  requirements:
-    status: verified  # or partial with target REQs verified
+## Specialists
+
+| Skill | Domain | Invocation |
+|-------|--------|------------|
+| sdd-design-frontend | Component architecture, state, patterns | After skeleton |
+| sdd-design-uiux | Layout, responsive, accessibility | After skeleton |
+| sdd-design-security | Threats, sandboxing, validation | After skeleton |
+| sdd-design-perf | Bundle size, lazy loading, caching | After skeleton |
+
+## Workflow
+
 ```
-
-## ID Formats
-
-| Type | Root | Package |
-|------|------|---------|
-| Decision | `DEC-{NNN}` | `DEC-{PKG}-{NNN}` |
-| Assumption | `ASM-{NNN}` | `ASM-{PKG}-{NNN}` |
+Phase 1: Skeleton
+    │
+    ├─→ Phase 2: Specialists (parallel)
+    │       ├── frontend
+    │       ├── uiux  
+    │       ├── security
+    │       └── perf
+    │
+    └─→ Phase 3: Merge
+```
 
 ## Instructions
 
-### 1. Choose Level
+### Phase 1: Create Skeleton
 
-- **Root:** `spec/design.md` (monorepo structure, shared tooling)
-- **Package:** `packages/{pkg}/spec/design.md` (sample implementation)
+1. **Read requirements document**
+   ```
+   packages/{package}/spec/{package}.requirements.md
+   ```
 
-### 2. Write Frontmatter
+2. **Create design file**
+   ```
+   packages/{package}/spec/{package}.design.md
+   ```
 
-```yaml
+3. **Write skeleton** using template:
+
+```markdown
 ---
 title: "{Package} Design"
+author: Claude
+date: {YYYY-MM-DD}
 version: 1.0.0
 status: draft
 depends_on:
-  - requirements.md@1.0.0
+  - packages/{package}/spec/{package}.requirements.md@{version}
 ---
-```
 
-### 3. Write Design Items
+# {Package} Design
 
-Each design item must have `@derives` linking to requirements:
+## Overview
 
-```markdown
-## Component Structure
+Brief description of the design approach.
 
-React components organized by feature, not type.
-
-`@derives:` REQ-REACT-001, REQ-REACT-002
-`@rationale:` Feature folders scale better than type folders (components/, hooks/, etc.)
-             as each feature remains self-contained.
+@derives: (list all REQ IDs)
 
 **Status:** draft
+
+## Component Architecture
+
+@derives: {REQ-IDs}
+
+<!-- sdd-design-frontend writes this section -->
+
+**Status:** pending
+
+## UI/UX Design
+
+@derives: {REQ-IDs}
+
+<!-- sdd-design-uiux writes this section -->
+
+**Status:** pending
+
+## Security Considerations
+
+@derives: {REQ-IDs}
+
+<!-- sdd-design-security writes this section -->
+
+**Status:** pending
+
+## Performance Strategy
+
+@derives: {REQ-IDs}
+
+<!-- sdd-design-perf writes this section -->
+
+**Status:** pending
+
+## Decisions Log
+
+| ID | Decision | Rationale | Owner |
+|----|----------|-----------|-------|
+| | | | |
+
+## Cross-Cutting Concerns
+
+> **Note:** Extension to sdd-guidelines for specialist coordination.
+
+| Concern | Primary | Reviewer | Status |
+|---------|---------|----------|--------|
+| Accessibility | uiux | frontend | pending |
+| Error handling | frontend | security | pending |
+| Loading states | uiux | perf | pending |
 ```
 
-### 4. Document Decisions (DEC-NNN)
-
-Create formal decision records for significant choices:
-
-| Significance | Format |
-|--------------|--------|
-| High (architecture) | Separate file: `spec/decisions/DEC-NNN.md` |
-| Medium (component) | Inline `@rationale` block |
-| Low (minor) | Inline `@rationale` comment |
-
-**When rationale is required:**
-- Alternatives existed
-- Trade-off involved
-- Future risk from assumption
-- Reviewer would ask "why?"
-
-### 5. Document Assumptions (ASM-NNN)
-
-Track high-risk assumptions:
-
-```markdown
-`@assumes:` ASM-REACT-001 (React 18 concurrent features stable)
-```
-
-Formal ASM record when:
-- Invalidation would require significant rework
-- Depends on external factor
-- Multiple items share assumption
-
-### 6. Update State
-
-Claim ownership and update `.sdd/state.yaml`:
+4. **Initialize state file**
 
 ```yaml
+# .sdd/state.yaml (add to existing)
 documents:
-  design: { status: draft, version: 1.0.0, owner: claude }
+  design:
+    status: draft
+    sections:
+      component-architecture:
+        status: pending
+        owner: sdd-design-frontend
+      uiux:
+        status: pending
+        owner: sdd-design-uiux
+      security:
+        status: pending
+        owner: sdd-design-security
+      perf:
+        status: pending
+        owner: sdd-design-perf
 ```
 
-## Example: Package Design
+5. **Map REQs to sections**
 
-```markdown
----
-title: "React Sample Design"
-version: 1.0.0
-status: draft
-depends_on:
-  - requirements.md@1.0.0
----
+   Read each requirement and determine which section(s) address it:
 
-# React Sample Design
+   | Section | Typical REQs |
+   |---------|--------------|
+   | Component Architecture | Structure, data flow, patterns |
+   | UI/UX Design | Layout, interaction, responsive |
+   | Security | User input, code execution, XSS |
+   | Performance | Loading, bundle size, caching |
 
-## Build Tooling
+6. **Fill @derives for each section**
 
-Rsbuild for development and production builds.
+### Phase 2: Invoke Specialists
 
-`@derives:` REQ-REACT-001, root::REQ-003
-`@rationale:` DEC-REACT-001
+Invoke all specialists **in parallel**. Each specialist:
+- Reads the skeleton
+- Reads assigned REQs
+- Writes their section
+- Adds decisions to Decisions Log
 
-**Status:** draft
-
----
-
-## State Management
-
-Todo items stored in React Context with useReducer.
-
-`@derives:` REQ-REACT-001, REQ-REACT-002
-`@rationale:` Context + useReducer over external state library:
-             - Demonstrates React-native patterns (PATTERN-HOOKS)
-             - No additional dependencies (QUALITY-MINIMAL)
-             - Sufficient for todo app scale
-
-**Status:** draft
-
----
-
-## Data Persistence
-
-Todos persisted to localStorage on state change.
-
-`@derives:` REQ-REACT-001
-`@assumes:` ASM-REACT-001 (localStorage sufficient for demo data)
-
-**Status:** draft
-
+**Invocation format:**
 ```
+Use sdd-design-{specialist} to write the {Section Name} section 
+for packages/{package}/spec/{package}.design.md
+```
+
+### Phase 3: Merge
+
+After all specialists complete:
+
+1. **Collect outputs**
+   - Each specialist's section content
+   - Decisions added to log
+
+2. **Check conflicts**
+
+   | Conflict Type | Detection | Resolution |
+   |---------------|-----------|------------|
+   | Library choice | Same need, different lib | Perf wins unless security concern |
+   | Pattern choice | Same problem, different pattern | Frontend decides |
+   | Layout vs Perf | UX wants X, Perf says too heavy | UX for primary flow, Perf for edge |
+   | Any vs Security | Security flags risk | Security wins, find alternative |
+
+3. **Review cross-cutting concerns**
+
+   For each concern:
+   - Primary owner wrote the approach
+   - Reviewer validates from their perspective
+   - Mark status: `approved` or `needs-revision`
+
+4. **Ensure consistency**
+   - Terminology matches across sections
+   - No contradicting decisions
+   - All REQs have @derives coverage
+
+5. **Update status**
+   - If no conflicts: `status: verified`
+   - If unresolved: `status: blocked` + note
+
+## Example: react-sample
+
+### Skeleton REQ Mapping
+
+| Section | REQs |
+|---------|------|
+| Component Architecture | REQ-REACT-001, 002, 003, 004 |
+| UI/UX Design | REQ-REACT-002, 003, 005 |
+| Security Considerations | REQ-REACT-004 |
+| Performance Strategy | REQ-REACT-003, 004 |
+
+### Cross-Cutting for react-sample
+
+| Concern | Primary | Reviewer | Notes |
+|---------|---------|----------|-------|
+| Accessibility | uiux | frontend | Keyboard nav for playground |
+| Error handling | frontend | security | Editable code errors |
+| Loading states | uiux | perf | Code viewer lazy load |
+| Code display | frontend | perf | Syntax highlighter choice |
+| User input | frontend | security | Props playground inputs |
 
 ## Verification
 
-After writing design:
+After merge:
 
-- [ ] Frontmatter has depends_on pointing to verified requirements
-- [ ] Every design item has `@derives` with valid REQ ID(s)
-- [ ] Non-obvious choices have `@rationale`
-- [ ] High-risk assumptions documented as ASM-NNN
-- [ ] Significant decisions documented as DEC-NNN
-- [ ] Cross-level refs use `root::` prefix
+- [ ] All REQs appear in at least one @derives
+- [ ] No section has placeholder comments
+- [ ] Decisions Log has entries from each specialist
+- [ ] Cross-cutting concerns all `approved`
+- [ ] No contradicting decisions
+- [ ] Frontmatter complete (title, version, depends_on)
 
-## State Update
+## Conflict Escalation
 
-After design verified:
-```yaml
-documents:
-  design: { status: verified, version: 1.0.0, owner: human }
-```
+If specialists can't resolve:
 
-Transfer ownership when complete.
+1. Document both options in Decisions Log
+2. Set decision status to `escalated`
+3. Flag for human review:
+   ```markdown
+   > ⚠️ **Escalated:** {description}
+   > Options: A) {option1} B) {option2}
+   > Blocked until human decision.
+   ```
 
-## Next Phase
+## References
 
-When design is verified, ready for implementation:
-- All design items have traceability to requirements
-- Decisions documented for future reference
-
-## Reference
-
-For full details: `.claude/skills/sdd-guidelines/reference/guidelines-v4.4.md` sections 1.3, 1.4, 2, 3.3
+- [reference/section-templates.md](reference/section-templates.md) — Detailed section structures
