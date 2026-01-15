@@ -25,7 +25,9 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
-    "test:e2e:codegen": "playwright codegen http://localhost:5173"
+    "test:e2e:codegen": "playwright codegen http://localhost:5173",
+    "check:spec": "tsx scripts/check-spec-compliance.ts",
+    "prepare": "husky"
   },
   "keywords": [
     "monorepo",
@@ -40,6 +42,8 @@
   "license": "MIT",
   "packageManager": "pnpm@10.19.0",
   "devDependencies": {
-    "@playwright/test": "^1.56.1"
+    "@playwright/test": "^1.56.1",
+    "husky": "^9.1.7",
+    "tsx": "^4.16.2"
   }
 }

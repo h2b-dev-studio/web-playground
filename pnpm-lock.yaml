@@ -11,6 +11,12 @@ importers:
       '@playwright/test':
         specifier: ^1.56.1
         version: 1.56.1
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
+      tsx:
+        specifier: ^4.16.2
+        version: 4.20.6
 
   entry:
     devDependencies:
@@ -1564,6 +1570,11 @@ packages:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
 
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -1786,6 +1797,7 @@ packages:
   next@14.2.33:
     resolution: {integrity: sha512-GiKHLsD00t4ACm1p00VgrI0rUFAC9cRDGReKyERlM57aeEZkOQGcZTpIbsGn0b562FTPJWmYfKwplfO9EaT6ng==}
     engines: {node: '>=18.17.0'}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -3770,6 +3782,8 @@ snapshots:
       setprototypeof: 1.2.0
       statuses: 2.0.1
       toidentifier: 1.0.1
+
+  husky@9.1.7: {}
 
   iconv-lite@0.4.24:
     dependencies:
