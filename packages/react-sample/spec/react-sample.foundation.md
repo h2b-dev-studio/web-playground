@@ -2,11 +2,12 @@
 title: "React Sample Foundation"
 author: Claude
 date: 2025-01-14
-version: 1.0.0
+version: 1.1.0
 status: draft
 inherits:
   - spec/foundation.md@1.1.0
 changelog:
+  - v1.1.0: Fix anchor prefixes to follow SDD package conventions
   - v1.0.0: Initial foundation for Pattern Gallery + Props Playground
 ---
 
@@ -25,19 +26,34 @@ Enable developers to:
 3. Study implementation details with syntax-highlighted source code
 4. Learn by editing hook logic in select examples
 
+## Inherits
+
+- root::SCOPE-SHOWCASE
+- root::SCOPE-WEB-TECH
+- root::QUALITY-TYPESCRIPT
+- root::QUALITY-MINIMAL
+- root::QUALITY-IDIOMATIC
+- root::QUALITY-DOCUMENTED
+- root::QUALITY-TESTED
+- root::AUDIENCE-DEVELOPER
+- root::AUDIENCE-INTERMEDIATE
+
 ## Identity Anchors
 
-Inherits all anchors from parent Foundation. Additional subsystem-specific anchors:
+Package-specific anchors extending inherited root anchors:
 
-### Scope
+### Technology
 
-- **SCOPE-REACT-PATTERNS:** Focuses on React-specific patterns (Compound Components, Render Props, Custom Hooks, etc.), not general JavaScript patterns.
-- **SCOPE-REACT-INTERACTIVE:** Every pattern demo is interactive, not static code snippets.
+- **TECH-NO-JSX-EDIT:** Editable examples limited to JS logic only. No runtime JSX compilation.
+- **TECH-LIGHTWEIGHT-DEPS:** Only lightweight libraries for code display (~10KB total max for syntax highlighting + editor).
 
-### Constraints
+### Patterns
 
-- **CONSTRAINT-REACT-NO-JSX-EDIT:** Editable examples limited to JS logic only. No runtime JSX compilation.
-- **CONSTRAINT-REACT-LIGHTWEIGHT-DEPS:** Only lightweight libraries for code display (~10KB total max for syntax highlighting + editor).
+- **PATTERN-REACT:** Focuses on React-specific patterns (Compound Components, Render Props, Custom Hooks, etc.), not general JavaScript patterns.
+
+### Demo
+
+- **DEMO-INTERACTIVE:** Every pattern demo is interactive, not static code snippets.
 
 ## Scope Boundaries
 

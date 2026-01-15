@@ -15,9 +15,9 @@ documents:
     owner: unassigned
   react-sample.foundation:
     status: draft
-    version: 1.0.0
+    version: 1.1.0
     owner: claude
   react-sample.requirements:
     status: draft
-    version: 1.0.0
+    version: 1.1.0
     owner: claude

@@ -2,11 +2,12 @@
 title: "React Sample Requirements"
 author: Claude
 date: 2025-01-14
-version: 1.0.0
+version: 1.1.0
 status: draft
 depends_on:
-  - packages/react-sample/spec/react-sample.foundation.md@1.0.0
+  - packages/react-sample/spec/react-sample.foundation.md@1.1.0
 changelog:
+  - v1.1.0: Update anchor references to follow SDD package conventions
   - v1.0.0: Initial requirements for Pattern Gallery + Props Playground
 ---
 
@@ -32,7 +33,7 @@ Gallery displays all implemented patterns with navigation.
 | State | Context + Reducer | ThemeProvider |
 | State | Lifting State Up | FormWithValidation |
 
-`@aligns-to:` SCOPE-SHOWCASE, SCOPE-REACT-PATTERNS, QUALITY-IDIOMATIC, AUDIENCE-INTERMEDIATE
+`@aligns-to:` SCOPE-SHOWCASE, PATTERN-REACT, QUALITY-IDIOMATIC, AUDIENCE-INTERMEDIATE
 
 **Status:** draft
 
@@ -57,7 +58,7 @@ Each demo includes UI controls to manipulate component props in real-time.
 | `enum` / union | Select dropdown |
 | `ReactNode` | Predefined options dropdown |
 
-`@aligns-to:` SCOPE-SHOWCASE, SCOPE-REACT-INTERACTIVE, AUDIENCE-DEVELOPER
+`@aligns-to:` SCOPE-SHOWCASE, DEMO-INTERACTIVE, AUDIENCE-DEVELOPER
 
 **Status:** draft
 
@@ -78,7 +79,7 @@ Source code displayed alongside each demo with syntax highlighting.
 - Collapsible panel
 - Displays actual component source (not duplicated snippets)
 
-`@aligns-to:` QUALITY-MINIMAL, QUALITY-DOCUMENTED, AUDIENCE-DEVELOPER, CONSTRAINT-REACT-LIGHTWEIGHT-DEPS
+`@aligns-to:` QUALITY-MINIMAL, QUALITY-DOCUMENTED, AUDIENCE-DEVELOPER, TECH-LIGHTWEIGHT-DEPS
 
 **Status:** draft
 
@@ -103,7 +104,7 @@ Select custom hook examples allow inline code editing for JS logic.
 - `useToggle`
 - `useDebounce`
 
-`@aligns-to:` SCOPE-REACT-INTERACTIVE, AUDIENCE-DEVELOPER, AUDIENCE-INTERMEDIATE, CONSTRAINT-REACT-NO-JSX-EDIT
+`@aligns-to:` DEMO-INTERACTIVE, AUDIENCE-DEVELOPER, AUDIENCE-INTERMEDIATE, TECH-NO-JSX-EDIT
 
 **Status:** draft
 
@@ -142,13 +143,13 @@ Gallery works on desktop, tablet, and mobile viewports.
 | Anchor | Requirements |
 |--------|--------------|
 | SCOPE-SHOWCASE | REQ-REACT-001, REQ-REACT-002 |
-| SCOPE-REACT-PATTERNS | REQ-REACT-001 |
-| SCOPE-REACT-INTERACTIVE | REQ-REACT-002, REQ-REACT-004 |
+| PATTERN-REACT | REQ-REACT-001 |
+| DEMO-INTERACTIVE | REQ-REACT-002, REQ-REACT-004 |
 | QUALITY-MINIMAL | REQ-REACT-003 |
 | QUALITY-IDIOMATIC | REQ-REACT-001 |
 | QUALITY-DOCUMENTED | REQ-REACT-003 |
 | QUALITY-TESTED | *(inherited from REQ-003)* |
 | AUDIENCE-DEVELOPER | REQ-REACT-002, REQ-REACT-003, REQ-REACT-004, REQ-REACT-005 |
 | AUDIENCE-INTERMEDIATE | REQ-REACT-001, REQ-REACT-004 |
-| CONSTRAINT-REACT-NO-JSX-EDIT | REQ-REACT-004 |
-| CONSTRAINT-REACT-LIGHTWEIGHT-DEPS | REQ-REACT-003 |
+| TECH-NO-JSX-EDIT | REQ-REACT-004 |
+| TECH-LIGHTWEIGHT-DEPS | REQ-REACT-003 |
