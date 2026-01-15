@@ -2,11 +2,12 @@
 title: "React Sample Requirements"
 author: Claude
 date: 2025-01-14
-version: 1.1.0
+version: 1.2.0
 status: draft
 depends_on:
   - packages/react-sample/spec/react-sample.foundation.md@1.1.0
 changelog:
+  - v1.2.0: Add root:: prefix to inherited anchors, add missing anchor coverage
   - v1.1.0: Update anchor references to follow SDD package conventions
   - v1.0.0: Initial requirements for Pattern Gallery + Props Playground
 ---
@@ -33,7 +34,7 @@ Gallery displays all implemented patterns with navigation.
 | State | Context + Reducer | ThemeProvider |
 | State | Lifting State Up | FormWithValidation |
 
-`@aligns-to:` SCOPE-SHOWCASE, PATTERN-REACT, QUALITY-IDIOMATIC, AUDIENCE-INTERMEDIATE
+`@aligns-to:` root::SCOPE-SHOWCASE, root::SCOPE-WEB-TECH, PATTERN-REACT, root::QUALITY-IDIOMATIC, root::AUDIENCE-INTERMEDIATE
 
 **Status:** draft
 
@@ -58,7 +59,7 @@ Each demo includes UI controls to manipulate component props in real-time.
 | `enum` / union | Select dropdown |
 | `ReactNode` | Predefined options dropdown |
 
-`@aligns-to:` SCOPE-SHOWCASE, DEMO-INTERACTIVE, AUDIENCE-DEVELOPER
+`@aligns-to:` root::SCOPE-SHOWCASE, DEMO-INTERACTIVE, root::AUDIENCE-DEVELOPER
 
 **Status:** draft
 
@@ -79,7 +80,7 @@ Source code displayed alongside each demo with syntax highlighting.
 - Collapsible panel
 - Displays actual component source (not duplicated snippets)
 
-`@aligns-to:` QUALITY-MINIMAL, QUALITY-DOCUMENTED, AUDIENCE-DEVELOPER, TECH-LIGHTWEIGHT-DEPS
+`@aligns-to:` root::QUALITY-MINIMAL, root::QUALITY-DOCUMENTED, root::QUALITY-TYPESCRIPT, root::AUDIENCE-DEVELOPER, TECH-LIGHTWEIGHT-DEPS
 
 **Status:** draft
 
@@ -104,7 +105,7 @@ Select custom hook examples allow inline code editing for JS logic.
 - `useToggle`
 - `useDebounce`
 
-`@aligns-to:` DEMO-INTERACTIVE, AUDIENCE-DEVELOPER, AUDIENCE-INTERMEDIATE, TECH-NO-JSX-EDIT
+`@aligns-to:` DEMO-INTERACTIVE, root::AUDIENCE-DEVELOPER, root::AUDIENCE-INTERMEDIATE, TECH-NO-JSX-EDIT
 
 **Status:** draft
 
@@ -127,7 +128,7 @@ Gallery works on desktop, tablet, and mobile viewports.
 | Tablet | 768–1023px | Stacked, code collapsed by default |
 | Mobile | <768px | Full-width, code hidden by default |
 
-`@aligns-to:` AUDIENCE-DEVELOPER
+`@aligns-to:` root::AUDIENCE-DEVELOPER
 
 **Status:** draft
 
@@ -142,14 +143,16 @@ Gallery works on desktop, tablet, and mobile viewports.
 
 | Anchor | Requirements |
 |--------|--------------|
-| SCOPE-SHOWCASE | REQ-REACT-001, REQ-REACT-002 |
+| root::SCOPE-SHOWCASE | REQ-REACT-001, REQ-REACT-002 |
+| root::SCOPE-WEB-TECH | REQ-REACT-001 |
+| root::QUALITY-TYPESCRIPT | REQ-REACT-003 |
+| root::QUALITY-MINIMAL | REQ-REACT-003 |
+| root::QUALITY-IDIOMATIC | REQ-REACT-001 |
+| root::QUALITY-DOCUMENTED | REQ-REACT-003 |
+| root::QUALITY-TESTED | *(inherited from REQ-003)* |
+| root::AUDIENCE-DEVELOPER | REQ-REACT-002, REQ-REACT-003, REQ-REACT-004, REQ-REACT-005 |
+| root::AUDIENCE-INTERMEDIATE | REQ-REACT-001, REQ-REACT-004 |
 | PATTERN-REACT | REQ-REACT-001 |
 | DEMO-INTERACTIVE | REQ-REACT-002, REQ-REACT-004 |
-| QUALITY-MINIMAL | REQ-REACT-003 |
-| QUALITY-IDIOMATIC | REQ-REACT-001 |
-| QUALITY-DOCUMENTED | REQ-REACT-003 |
-| QUALITY-TESTED | *(inherited from REQ-003)* |
-| AUDIENCE-DEVELOPER | REQ-REACT-002, REQ-REACT-003, REQ-REACT-004, REQ-REACT-005 |
-| AUDIENCE-INTERMEDIATE | REQ-REACT-001, REQ-REACT-004 |
 | TECH-NO-JSX-EDIT | REQ-REACT-004 |
 | TECH-LIGHTWEIGHT-DEPS | REQ-REACT-003 |
