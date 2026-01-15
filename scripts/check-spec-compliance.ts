@@ -7,13 +7,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Discover packages dynamically
 const PACKAGES = [
   'entry',
-  'packages/react-sample',
-  'packages/preact-sample',
-  'packages/next-sample',
-  'packages/express-sample',
-  'packages/nest-sample',
+  ...fs
+    .readdirSync('packages', { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => `packages/${d.name}`),
 ];
 
 let errors = 0;
