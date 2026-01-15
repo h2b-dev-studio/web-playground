@@ -1,7 +1,7 @@
 ---
 title: "Web Playground Design"
 version: 1.0.0
-status: draft
+status: verified
 depends_on:
   - requirements.md@1.1.0
 ---
@@ -19,7 +19,7 @@ pnpm workspace with two package globs: `entry` for the landing page, `packages/*
 `@derives:` REQ-001
 `@rationale:` Entry at root level for cleaner build output paths; samples grouped in packages/ for organization.
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -30,7 +30,7 @@ Unified commands use `pnpm -r run <cmd>` to execute across all packages. Targete
 `@derives:` REQ-001
 `@rationale:` DEC-001
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -43,7 +43,7 @@ All packages output to a unified `dist/` directory at repository root:
 `@derives:` REQ-001, REQ-002
 `@rationale:` DEC-002
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -57,7 +57,7 @@ Static HTML page built with Vite. Links to samples via relative paths (`{sample-
              - No JavaScript required to view links
              - Demonstrates vanilla TypeScript patterns
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -72,7 +72,7 @@ Each package contains:
 `@derives:` REQ-003
 `@rationale:` Consistent structure enables unified commands and sets clear expectations for contributors.
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -88,7 +88,7 @@ Each package manages its own `tsconfig.json` with strict mode. No shared base co
 
 `@assumes:` ASM-001 (Package tsconfig divergence remains manageable)
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -105,7 +105,7 @@ Each package implements its own test setup using technology-appropriate tools.
 
 `@assumes:` ASM-002 (All test frameworks support `pnpm test` script convention)
 
-**Status:** draft
+**Status:** verified
 
 ---
 
@@ -119,7 +119,7 @@ Playwright for cross-sample integration tests. Configuration at repository root.
              - Multi-browser by default
              - Lighter weight for CI
 
-**Status:** draft
+**Status:** verified
 
 ---
 
