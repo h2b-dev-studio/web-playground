@@ -4,6 +4,7 @@ description: |
   Spec-Driven Development framework for maintaining documentation integrity.
   Use when: creating specifications, verifying traceability, managing multi-agent work.
   Triggers: "sdd", "spec-driven", "foundation document", "requirements traceability"
+  NOT for: prototypes, single-session work, trivial scope (<1 day), learning/exploration
 ---
 
 # SDD Guidelines
@@ -56,6 +57,24 @@ draft → verified → obsolete
 blocked ←←←┘ (on change)
 ```
 
+## Path Convention
+
+All `depends_on` and `inherits` paths are relative to **project root** (no leading slash).
+
+```yaml
+# In packages/react-sample/spec/react-sample.requirements.md
+depends_on:
+  - packages/react-sample/spec/react-sample.foundation.md@1.0.0
+inherits:
+  - spec/foundation.md@1.0.0
+```
+
+| ❌ Wrong | ✅ Correct |
+|----------|------------|
+| `../../spec/foundation.md` | `spec/foundation.md` |
+| `/spec/foundation.md` | `spec/foundation.md` |
+| `./react-sample.foundation.md` | `packages/react-sample/spec/react-sample.foundation.md` |
+
 ## Instructions
 
 | Task | Read | Key Actions |
@@ -72,60 +91,41 @@ blocked ←←←┘ (on change)
 | Customize for project | §9 | Prefixes, ID formats, severity levels |
 | Coordinate agents | §10 | Ownership, locking, escalation |
 
-## Examples
+## Subsystem Checklist
 
-### Minimal Foundation
+When creating a subsystem (package, module, etc.):
 
-```markdown
----
-title: "Project Foundation"
-version: 1.0.0
-status: draft
----
+1. [ ] Create Foundation first (`inherits:` parent foundation)
+2. [ ] Define subsystem-specific anchors
+3. [ ] Create Requirements (`depends_on:` subsystem foundation)
+4. [ ] Create Design later (`depends_on:` subsystem requirements)
 
-# Project Name
-
-## Identity
-
-One-sentence description of what this is.
-
-## Identity Anchors
-
-- **SCOPE-LOCAL:** Single user, local storage only
-- **CONSTRAINT-KEYBOARD:** All actions via keyboard
+```
+{project}/
+├── spec/
+│   └── foundation.md          ← parent
+└── packages/{name}/
+    └── spec/
+        ├── {name}.foundation.md      ← inherits parent
+        ├── {name}.requirements.md    ← depends_on foundation
+        └── {name}.design.md          ← depends_on requirements
 ```
 
-### Requirement with Alignment
+## Common Mistakes
 
-```markdown
-## REQ-001: Create Task
+| Mistake | Why Wrong | Correct |
+|---------|-----------|---------|
+| Requirements + Design in one doc | Artifacts are separate (§1) | Split into separate files |
+| Subsystem without Foundation | Subsystems need identity (§7.2) | Create Foundation first |
+| `@aligns-to` in Design | Design links to REQs, not anchors | Use `@derives` |
+| `@derives` in Requirements | REQs link to anchors, not other REQs | Use `@aligns-to` |
+| Implementation details in REQs | REQs are what, not how | Move to Design |
+| Relative paths in `depends_on` | Fragile, breaks on move | Use project-root paths |
 
-User can create a task with title.
+## Resources
 
-`@aligns-to:` SCOPE-LOCAL
-```
-
-### Design with Traceability
-
-```markdown
-## Data Storage
-
-Tasks stored as JSON in localStorage.
-
-`@derives:` REQ-001
-`@rationale:` localStorage over IndexedDB — simpler API, <1000 tasks expected
-```
-
-## When NOT to Use SDD
-
-- Prototype/spike (use README)
-- Single-session work
-- Trivial scope (<1 day)
-- Learning/exploration
-
-## Full Reference
-
-| Document | Content |
+| Resource | Content |
 |----------|---------|
-| [guidelines-v4.4.md](reference/guidelines-v4.4.md) | Complete structural rules |
-| [philosophy-v5.md](reference/philosophy-v5.md) | Why integrity matters |
+| [reference/guidelines-v4.4.md](reference/guidelines-v4.4.md) | Complete structural rules |
+| [reference/philosophy-v5.md](reference/philosophy-v5.md) | Why integrity matters |
+| [reference/examples.md](reference/examples.md) | Concrete examples for each artifact |
