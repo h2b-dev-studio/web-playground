@@ -2,13 +2,13 @@
 name: sdd-workflow
 description: |
   Manage SDD state, handoffs, and versioning for web-playground.
-  Use when: tracking progress, handing off between sessions, propagating changes.
+  Use when: tracking progress, handing off between sessions/agents, propagating changes.
   Triggers: "sdd workflow", "sdd status", "propagate changes", "handoff"
 ---
 
 # Web Playground SDD Workflow
 
-Track state and enable session continuity for SDD work.
+Track state and enable multi-agent/session continuity for SDD work.
 
 ## State File
 
@@ -20,14 +20,15 @@ updated: 2025-01-15T10:00:00Z
 current_phase: requirements  # foundation | requirements | design
 
 documents:
-  foundation: { status: verified, version: 1.0.0 }
-  requirements: { status: partial, version: 1.1.0 }
-  design: { status: draft, version: 0.1.0 }
+  foundation: { status: verified, version: 1.0.0, owner: human }
+  requirements: { status: partial, version: 1.1.0, owner: claude }
+  design: { status: draft, version: 0.1.0, owner: unassigned }
 
 packages:
   react-sample: { foundation: verified, requirements: draft }
 
 gaps: []
+escalations: []
 ```
 
 ## Status Values
@@ -36,8 +37,16 @@ gaps: []
 |--------|---------|
 | `draft` | Created, not verified |
 | `verified` | Passed verification |
-| `blocked` | Waiting on user input |
+| `blocked` | Waiting on escalation resolution |
 | `partial` | Some items verified, some draft |
+
+## Owner Values
+
+| Owner | Meaning |
+|-------|---------|
+| `claude` | Current Claude session owns this |
+| `human` | Human is responsible |
+| `unassigned` | Available for next agent |
 
 ## Instructions
 
@@ -47,29 +56,57 @@ gaps: []
 mkdir -p .sdd
 ```
 
-Create minimal `.sdd/state.yaml` with `current_phase: foundation`.
+Create `.sdd/state.yaml` with `current_phase: foundation`.
 
-### 2. Track Progress
+### 2. Claim Ownership
+
+Before modifying a document, update owner:
+```yaml
+documents:
+  requirements: { status: draft, owner: claude }
+```
+
+### 3. Track Progress
 
 Update state after completing work:
 ```yaml
 documents:
-  foundation: { status: verified, version: 1.0.0 }
+  foundation: { status: verified, version: 1.0.0, owner: human }
 ```
 
-### 3. Propagate Changes
+### 4. Escalate When Blocked
+
+When needing human decision:
+```yaml
+escalations:
+  - id: ESC-001
+    type: scope_decision
+    description: "Should QUALITY-MINIMAL allow lodash?"
+    items_affected: [REQ-003]
+    status: pending  # pending | resolved
+```
+
+Set affected items to `blocked` status.
+
+### 5. Propagate Changes
 
 ```
 Foundation change -> Re-verify Requirements (@aligns-to links)
 Requirements change -> Re-verify Design (@derives links)
 ```
 
-### 4. Session Handoff
+### 6. Session Handoff
 
 At session end, write `.sdd/handoff.md`:
 
 ```markdown
 # SDD Handoff - 2025-01-15
+
+**From:** claude
+**To:** human (or next claude session)
+
+## Ownership Transfer
+- requirements: claude -> unassigned
 
 ## Completed
 - Foundation verified with SCOPE-MONOREPO, QUALITY-TYPESCRIPT anchors
@@ -78,12 +115,12 @@ At session end, write `.sdd/handoff.md`:
 - REQ-002: 50% complete, needs verification criteria
 
 ## Blocked
-- (none)
+- REQ-003: waiting on ESC-001 (scope decision)
 
 ## Next Steps
-1. Complete REQ-002 verification criteria
-2. Run alignment check
-3. Begin design phase
+1. Resolve ESC-001 (human decision needed)
+2. Complete REQ-002 verification criteria
+3. Run alignment check
 ```
 
 ## Versioning
@@ -103,9 +140,10 @@ Package specs in `packages/{pkg}/spec/`. Reference root with `root::` prefix:
 ## Verification
 
 - [ ] State file reflects actual document status
-- [ ] Handoff enables next session to continue without questions
-- [ ] Version bumps follow semantic rules
+- [ ] Ownership assigned before modifications
+- [ ] Escalations documented when blocked
+- [ ] Handoff enables next agent to continue without questions
 
 ## Reference
 
-For full details: `.claude/skills/sdd-guidelines/reference/guidelines-v4.4.md` sections 4, 5, 8
+For full details: `.claude/skills/sdd-guidelines/reference/guidelines-v4.4.md` sections 4, 5, 8, 10

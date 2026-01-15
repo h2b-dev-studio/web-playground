@@ -64,11 +64,11 @@ For packages, reference root anchors: `Inherits: root::SCOPE-SHOWCASE, root::QUA
 
 ### 6. Update State
 
-After creating, update `.sdd/state.yaml`:
+Claim ownership and update `.sdd/state.yaml`:
 
 ```yaml
 documents:
-  foundation: { status: draft, version: 1.0.0 }
+  foundation: { status: draft, version: 1.0.0, owner: claude }
 ```
 
 ## Example: Package Foundation
@@ -134,9 +134,11 @@ After creating Foundation:
 After verification passes:
 ```yaml
 documents:
-  foundation: { status: verified, version: 1.0.0 }
+  foundation: { status: verified, version: 1.0.0, owner: human }
 current_phase: requirements
 ```
+
+Transfer ownership to `human` or `unassigned` when complete.
 
 ## Next Phase
 

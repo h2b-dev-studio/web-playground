@@ -82,6 +82,18 @@ After fix: re-verify, then mark `verified`.
 - Missing artifact (not just link)
 - User intent ambiguity
 
+Create escalation in `.sdd/state.yaml`:
+```yaml
+escalations:
+  - id: ESC-001
+    type: interpretation  # or: scope_decision, contradiction
+    description: "REQ-003 and REQ-005 appear to conflict"
+    items_affected: [REQ-003, REQ-005]
+    status: pending
+```
+
+Set affected items to `blocked` and transfer ownership to `human`.
+
 ## Gap Documentation
 
 Add gaps to `.sdd/state.yaml`:
@@ -141,10 +153,12 @@ gaps:
 After verification:
 ```yaml
 documents:
-  requirements: { status: verified }
-  design: { status: draft }  # or verified if passed
+  requirements: { status: verified, owner: human }
+  design: { status: draft, owner: claude }
 gaps:
   - { id: GAP-001, severity: major, description: "..." }
+escalations:
+  - { id: ESC-001, status: pending }  # if any
 ```
 
 ## Verification

@@ -91,9 +91,11 @@ Track which anchors are addressed:
 
 ### 6. Update State
 
+Claim ownership and update `.sdd/state.yaml`:
+
 ```yaml
 documents:
-  requirements: { status: draft, version: 1.0.0 }
+  requirements: { status: draft, version: 1.0.0, owner: claude }
 ```
 
 ## Example: Package Requirements
@@ -172,8 +174,16 @@ After writing requirements:
 After all requirements verified:
 ```yaml
 documents:
-  requirements: { status: verified, version: 1.0.0 }
+  requirements: { status: verified, version: 1.0.0, owner: human }
 current_phase: design
+```
+
+Transfer ownership when complete. If blocked on scope decision, escalate:
+```yaml
+escalations:
+  - id: ESC-001
+    description: "REQ-003 unclear if within scope"
+    status: pending
 ```
 
 ## Next Phase

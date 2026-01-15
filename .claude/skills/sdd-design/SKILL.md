@@ -94,9 +94,11 @@ Formal ASM record when:
 
 ### 6. Update State
 
+Claim ownership and update `.sdd/state.yaml`:
+
 ```yaml
 documents:
-  design: { status: draft, version: 1.0.0 }
+  design: { status: draft, version: 1.0.0, owner: claude }
 ```
 
 ## Example: Package Design
@@ -164,8 +166,10 @@ After writing design:
 After design verified:
 ```yaml
 documents:
-  design: { status: verified, version: 1.0.0 }
+  design: { status: verified, version: 1.0.0, owner: human }
 ```
+
+Transfer ownership when complete.
 
 ## Next Phase
 
