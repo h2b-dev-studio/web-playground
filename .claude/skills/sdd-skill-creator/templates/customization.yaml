@@ -1,0 +1,40 @@
+# SDD Skill Customization Record
+# Fill this out in Step 2, then use values throughout generated skills.
+
+project:
+  name: "{project-name}"
+  domain: "{domain}"  # game, API, CLI, library, etc.
+
+customizations:
+  # Anchor prefixes (Guidelines §9)
+  # Format: "PREFIX-: meaning"
+  anchor_prefixes:
+    - "SCOPE-: What the system does and doesn't do"
+    - "CONSTRAINT-: Technical or business limitations"
+    # Add domain-specific prefixes:
+    # - "MECHANIC-: Game mechanics" (for games)
+    # - "SLA-: Service level agreements" (for APIs)
+    # - "UX-: User experience principles" (for apps)
+
+  # Requirement ID format (Guidelines §9)
+  req_id_format: "REQ-{NNN}"
+  # Alternatives:
+  # - "REQ-{DOMAIN}-{NNN}" → REQ-AUTH-001, REQ-UI-002
+  # - "REQ-NF-{NNN}" for non-functional
+
+  # Multi-agent coordination (Guidelines §10)
+  multi_agent: false
+  # If true, generated skills will include:
+  # - Ownership checks before modify
+  # - Lock/unlock protocol
+  # - Escalation for cross-boundary
+  # - Multi-agent handoff fields
+
+# Domain-specific examples to include in generated skills
+examples:
+  anchors:
+    - "{PREFIX}-EXAMPLE: Example anchor description"
+  requirements:
+    - "REQ-001: Example requirement"
+  design:
+    - "Example design decision for this domain"
