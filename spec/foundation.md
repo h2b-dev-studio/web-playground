@@ -1,6 +1,6 @@
 ---
 title: "Web Playground Foundation"
-version: 1.0.0
+version: 1.1.0
 status: verified
 ---
 
@@ -64,10 +64,6 @@ Enable developers to:
 |---------|----------------|------------|
 | entry | Vanilla TS | Vite |
 | react-sample | React 18 | Rsbuild |
-| preact-sample | Preact 10 | Rsbuild |
-| next-sample | Next.js 14 | Next.js |
-| express-sample | Express.js | tsc + tsx |
-| nest-sample | NestJS | Nest CLI |
 
 ## Success Criteria
 
