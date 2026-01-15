@@ -3,7 +3,7 @@ title: "React Sample Requirements"
 author: Claude
 date: 2025-01-14
 version: 1.2.0
-status: draft
+status: verified
 depends_on:
   - packages/react-sample/spec/react-sample.foundation.md@1.1.0
 changelog:

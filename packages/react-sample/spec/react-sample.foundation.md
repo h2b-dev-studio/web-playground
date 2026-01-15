@@ -3,7 +3,7 @@ title: "React Sample Foundation"
 author: Claude
 date: 2025-01-14
 version: 1.1.0
-status: draft
+status: verified
 inherits:
   - spec/foundation.md@1.1.0
 changelog:
