@@ -87,6 +87,12 @@ for (const pkg of PACKAGES) {
   }
 }
 
+// REQ-003: README Documentation
+console.log('\nREQ-003: README Documentation');
+for (const pkg of PACKAGES) {
+  check(fs.existsSync(path.join(pkg, 'README.md')), `${pkg} has README.md`);
+}
+
 // Summary
 console.log('');
 if (errors === 0) {

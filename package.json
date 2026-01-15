@@ -26,7 +26,8 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
     "test:e2e:codegen": "playwright codegen http://localhost:5173",
-    "check:spec": "tsx scripts/check-spec-compliance.ts"
+    "check:spec": "tsx scripts/check-spec-compliance.ts",
+    "prepare": "tsx scripts/setup-hooks.ts"
   },
   "keywords": [
     "monorepo",
