@@ -1,9 +1,9 @@
 ---
 title: "Web Playground Requirements"
-version: 1.1.0
+version: 1.2.0
 status: verified
 depends_on:
-  - foundation.md@1.0.0
+  - foundation.md@1.1.0
 ---
 
 # Web Playground Requirements
@@ -24,22 +24,19 @@ Unified commands operate on all packages; targeted commands operate on individua
 - `pnpm clean` — Remove all build artifacts
 
 **Targeted commands (format `{command}:{package}`):**
-- `pnpm install:react` — Install only react-sample dependencies
-- `pnpm build:react` — Build only react-sample
-- `pnpm dev:react` — Run only react-sample dev server
-- `pnpm test:react` — Run only react-sample tests
-- `pnpm clean:react` — Remove only react-sample artifacts
+- `pnpm build:react-sample` — Build only react-sample
+- `pnpm dev:react-sample` — Run only react-sample dev server
 
 `@aligns-to:` SCOPE-MONOREPO, SCOPE-INDEPENDENT
 
 **Status:** verified
 
-**Verification:** 
+**Verification:**
 - `pnpm install` → all packages' `node_modules` populated
 - `pnpm build` → all packages produce output
 - `pnpm dev` → all servers start without port conflicts
-- `pnpm install:react` → only react-sample dependencies installed
-- `pnpm build:react` → only react-sample builds
+- `pnpm build:react-sample` → only react-sample builds
+- `pnpm dev:react-sample` → only react-sample dev server starts
 
 ---
 
