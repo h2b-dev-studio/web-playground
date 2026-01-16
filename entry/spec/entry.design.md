@@ -2,17 +2,19 @@
 title: "Entry Design"
 author: Claude
 date: 2025-01-16
-version: 1.0.0
-status: verified
+version: 1.1.0
+status: draft
 depends_on:
-  - entry/spec/entry.requirements.md@1.0.0
+  - entry/spec/entry.requirements.md@1.1.0
+changelog:
+  - v1.1.0: Add dynamic package registry generation design (REQ-ENTRY-009)
 ---
 
 # Entry Design
 
 Design for the landing page module following TECH-VANILLA and TECH-STATIC anchors.
 
-`@derives:` REQ-ENTRY-001, REQ-ENTRY-002, REQ-ENTRY-003, REQ-ENTRY-004, REQ-ENTRY-005, REQ-ENTRY-006, REQ-ENTRY-007, REQ-ENTRY-008
+`@derives:` REQ-ENTRY-001, REQ-ENTRY-002, REQ-ENTRY-003, REQ-ENTRY-004, REQ-ENTRY-005, REQ-ENTRY-006, REQ-ENTRY-007, REQ-ENTRY-008, REQ-ENTRY-009
 
 **Status:** verified
 
@@ -20,12 +22,13 @@ Design for the landing page module following TECH-VANILLA and TECH-STATIC anchor
 
 ## Component Architecture
 
-`@derives:` REQ-ENTRY-001, REQ-ENTRY-002, REQ-ENTRY-003, REQ-ENTRY-007
+`@derives:` REQ-ENTRY-001, REQ-ENTRY-002, REQ-ENTRY-003, REQ-ENTRY-007, REQ-ENTRY-009
 
 - REQ-ENTRY-001: Page structure hierarchy, semantic HTML elements
 - REQ-ENTRY-002: CardGrid and ProjectCard structure, PackageCard interface
 - REQ-ENTRY-003: Anchor-based navigation pattern, href attribute design
 - REQ-ENTRY-007: Static HTML structure, no-JS compatibility approach
+- REQ-ENTRY-009: Dynamic registry generation, metadata sourcing
 
 ### Component Hierarchy
 
@@ -67,16 +70,40 @@ interface PackageCard {
 }
 
 type PackageRegistry = readonly PackageCard[];
+
+/** Optional package.json extension for custom display metadata */
+interface PlaygroundMeta {
+  title?: string;
+  description?: string;
+}
 ```
 
-@rationale: Read-only array prevents accidental mutation; interface mirrors foundation contract exactly.
+@rationale: Read-only array prevents accidental mutation; interface mirrors foundation contract exactly. PlaygroundMeta allows packages to customize their entry display without affecting their npm package identity.
 
 ### Build-Time Data Flow
 
+`@derives:` REQ-ENTRY-009
+
 ```
 ┌─────────────────────┐
-│ packages.ts         │  Static package registry
-│ PackageCard[]       │
+│ packages/           │  Workspace packages directory
+│ ├── react-sample/   │
+│ │   └── package.json│  Contains playgroundMeta or name/description
+│ └── {other-pkg}/    │
+└──────────┬──────────┘
+           │ scan & read
+           ▼
+┌─────────────────────┐
+│ generate-registry   │  Build-time script (Node.js)
+│ - Scan packages/    │
+│ - Read package.json │
+│ - Extract metadata  │
+└──────────┬──────────┘
+           │ generate
+           ▼
+┌─────────────────────┐
+│ src/generated/      │  Generated TypeScript file
+│ registry.ts         │  export const packages: PackageRegistry = [...]
 └──────────┬──────────┘
            │ build-time import
            ▼
@@ -93,6 +120,46 @@ type PackageRegistry = readonly PackageCard[];
 └─────────────────────┘
 ```
 
+### Registry Generation Script
+
+`@derives:` REQ-ENTRY-009
+
+**Location:** `scripts/generate-registry.ts`
+
+**Algorithm:**
+```
+1. Read packages/ directory entries
+2. For each directory:
+   a. Check if package.json exists
+   b. Read and parse package.json
+   c. Extract metadata:
+      - title: playgroundMeta.title || cleanName(name)
+      - description: playgroundMeta.description || description || ""
+      - href: `${directoryName}/index.html`
+3. Sort packages alphabetically by title
+4. Write TypeScript file to src/generated/registry.ts
+```
+
+**Output format:**
+```typescript
+// src/generated/registry.ts (auto-generated, do not edit)
+import type { PackageRegistry } from '../types';
+
+export const packages: PackageRegistry = [
+  {
+    name: "React Sample",
+    description: "Modern React patterns with hooks and TypeScript",
+    href: "react-sample/index.html"
+  },
+  // ... more packages
+] as const;
+```
+
+**Build integration:**
+- Script runs as prebuild step: `pnpm generate:registry && vite build`
+- Generated file is gitignored (derived artifact)
+- TypeScript compilation validates registry structure
+
 ### State Management
 
 **No runtime state required.**
@@ -100,11 +167,12 @@ type PackageRegistry = readonly PackageCard[];
 | REQ | State Implication | Location |
 |-----|-------------------|----------|
 | REQ-ENTRY-001 | Static structure | HTML (compile-time) |
-| REQ-ENTRY-002 | Package list | TypeScript constant (compile-time) |
+| REQ-ENTRY-002 | Package list | Generated TypeScript (build-time) |
 | REQ-ENTRY-003 | Navigation | Anchor href attributes (no state) |
 | REQ-ENTRY-007 | No-JS requirement | Precludes runtime state |
+| REQ-ENTRY-009 | Package registry | Generated from packages/ (build-time) |
 
-@rationale: TECH-STATIC anchor requires core functionality without JavaScript. All "state" is compile-time data baked into HTML.
+@rationale: TECH-STATIC anchor requires core functionality without JavaScript. All "state" is build-time data baked into HTML. REQ-ENTRY-009 ensures the registry is generated, not hard-coded.
 
 ### Patterns Used
 
@@ -114,6 +182,7 @@ type PackageRegistry = readonly PackageCard[];
 | Accessible navigation | Card-as-anchor (entire card is clickable `<a>`) | REQ-ENTRY-003, REQ-ENTRY-007 |
 | Data-driven rendering | Template literal HTML generation | REQ-ENTRY-002 |
 | Progressive enhancement | JS enhances, HTML works standalone | REQ-ENTRY-007 |
+| Dynamic registry | Build-time code generation from package.json | REQ-ENTRY-009 |
 
 **Progressive Enhancement Strategy:**
 
@@ -286,6 +355,8 @@ Layer 3 (JS optional):   Future enhancements only
 | DEC-FE-001 | Cards as anchor elements | REQ-ENTRY-007 no-JS navigation | frontend |
 | DEC-FE-002 | Semantic HTML landmarks | REQ-ENTRY-001 accessibility/SEO | frontend |
 | DEC-FE-003 | Build-time data flow, no runtime state | REQ-ENTRY-007 + TECH-STATIC | frontend |
+| DEC-FE-004 | Generated registry over hard-coded | REQ-ENTRY-009, automatic package discovery | frontend |
+| DEC-FE-005 | playgroundMeta in package.json | REQ-ENTRY-009, allows custom display without npm identity change | frontend |
 | DEC-UX-001 | Two-tier responsive (768px) | REQ-ENTRY-006, QUALITY-MINIMAL | uiux |
 | DEC-UX-002 | Hover lift effect 300ms | REQ-ENTRY-005 | uiux |
 | DEC-SEC-001 | Static content model | REQ-ENTRY-007 eliminates injection | security |
@@ -316,3 +387,4 @@ Layer 3 (JS optional):   Future enhancements only
 | REQ-ENTRY-006 | | ✓ | | |
 | REQ-ENTRY-007 | ✓ | | ✓ | ✓ |
 | REQ-ENTRY-008 | | | | ✓ |
+| REQ-ENTRY-009 | ✓ | | | |

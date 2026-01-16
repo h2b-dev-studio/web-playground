@@ -2,11 +2,12 @@
 title: "Entry Requirements"
 author: Claude
 date: 2025-01-16
-version: 1.0.0
+version: 1.1.0
 status: verified
 depends_on:
-  - entry/spec/entry.foundation.md@1.0.0
+  - entry/spec/entry.foundation.md@1.1.0
 changelog:
+  - v1.1.0: Add dynamic package registry requirement (REQ-ENTRY-009)
   - v1.0.0: Initial requirements for Entry landing page
 ---
 
@@ -183,6 +184,32 @@ Entry module uses TypeScript with Vite for development and build.
 
 ---
 
+## REQ-ENTRY-009: Dynamic Package Registry
+
+Package registry is generated at build time from workspace packages, not hard-coded.
+
+**Registry generation:**
+- Scans `packages/` directory for valid package directories
+- Reads metadata from each package's `package.json`
+- Generates TypeScript registry file before build
+- Supports `playgroundMeta` extension for custom display names
+
+**Metadata sources (in priority order):**
+1. `package.json#playgroundMeta.title` / `playgroundMeta.description`
+2. `package.json#name` (cleaned) / `description`
+
+`@aligns-to:` REG-DYNAMIC, REG-METADATA, root::QUALITY-MINIMAL
+
+**Status:** draft
+
+**Verification:**
+- Adding a new package to `packages/` automatically appears in entry after build
+- Removing a package from `packages/` removes it from entry after build
+- No manual registry updates required when packages change
+- Registry generation script runs as part of build process
+
+---
+
 ## Coverage Matrix
 
 | Anchor | Requirements |
@@ -190,7 +217,7 @@ Entry module uses TypeScript with Vite for development and build.
 | root::SCOPE-SHOWCASE | REQ-ENTRY-001, REQ-ENTRY-002 |
 | root::SCOPE-MONOREPO | REQ-ENTRY-003 |
 | root::QUALITY-TYPESCRIPT | REQ-ENTRY-008 |
-| root::QUALITY-MINIMAL | REQ-ENTRY-001, REQ-ENTRY-007 |
+| root::QUALITY-MINIMAL | REQ-ENTRY-001, REQ-ENTRY-007, REQ-ENTRY-009 |
 | root::QUALITY-IDIOMATIC | REQ-ENTRY-004 |
 | root::AUDIENCE-DEVELOPER | REQ-ENTRY-002, REQ-ENTRY-005, REQ-ENTRY-006 |
 | TECH-VANILLA | REQ-ENTRY-008 |
@@ -199,3 +226,5 @@ Entry module uses TypeScript with Vite for development and build.
 | PRES-RESPONSIVE | REQ-ENTRY-006 |
 | NAV-CATALOG | REQ-ENTRY-002 |
 | NAV-DIRECT | REQ-ENTRY-003 |
+| REG-DYNAMIC | REQ-ENTRY-009 |
+| REG-METADATA | REQ-ENTRY-009 |
