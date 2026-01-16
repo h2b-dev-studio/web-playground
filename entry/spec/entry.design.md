@@ -3,7 +3,7 @@ title: "Entry Design"
 author: Claude
 date: 2025-01-16
 version: 1.1.0
-status: draft
+status: verified
 depends_on:
   - entry/spec/entry.requirements.md@1.1.0
 changelog:

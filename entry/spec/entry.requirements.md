@@ -200,7 +200,7 @@ Package registry is generated at build time from workspace packages, not hard-co
 
 `@aligns-to:` REG-DYNAMIC, REG-METADATA, root::QUALITY-MINIMAL
 
-**Status:** draft
+**Status:** verified
 
 **Verification:**
 - Adding a new package to `packages/` automatically appears in entry after build
