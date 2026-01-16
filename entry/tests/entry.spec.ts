@@ -2,11 +2,69 @@
  * Entry Page E2E Tests
  *
  * Verifies REQ-002: Entry Page - Landing page lists and links to all sample packages.
+ * Verifies REQ-ENTRY-009: Dynamic Package Registry - Cards generated from packages/
  *
- * @derives REQ-002
+ * @derives REQ-002, REQ-ENTRY-009
  * @aligns-to SCOPE-SHOWCASE, AUDIENCE-DEVELOPER
  */
 import { test, expect } from '@playwright/test';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Discovers packages from the packages/ directory
+ * This mirrors the registry generation logic for test verification
+ */
+function discoverPackages(): {
+  name: string;
+  description: string;
+  href: string;
+  dirName: string;
+}[] {
+  const packagesDir = path.join(__dirname, '../../packages');
+  const entries = fs.readdirSync(packagesDir, { withFileTypes: true });
+  const packages: { name: string; description: string; href: string; dirName: string }[] = [];
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+
+    const packageJsonPath = path.join(packagesDir, entry.name, 'package.json');
+    if (!fs.existsSync(packageJsonPath)) continue;
+
+    const content = fs.readFileSync(packageJsonPath, 'utf-8');
+    const pkg = JSON.parse(content);
+    const meta = pkg.playgroundMeta || {};
+
+    const name = meta.title || cleanPackageName(pkg.name);
+    const description = meta.description || pkg.description || '';
+
+    packages.push({
+      name,
+      description,
+      href: `${entry.name}/index.html`,
+      dirName: entry.name,
+    });
+  }
+
+  return packages.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
+ * Converts kebab-case to Title Case
+ */
+function cleanPackageName(name: string): string {
+  const unscoped = name.replace(/^@[^/]+\//, '');
+  return unscoped
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+// Discover packages at test initialization
+const discoveredPackages = discoverPackages();
 
 test.describe('Entry Page - Landing Page (REQ-002)', () => {
   test.beforeEach(async ({ page }) => {
@@ -28,44 +86,34 @@ test.describe('Entry Page - Landing Page (REQ-002)', () => {
     await expect(subtitle).toContainText('웹 기술을 탐색하고 실험하기 위한 개인 공간입니다');
   });
 
-  test('should display all 5 project cards', async ({ page }) => {
+  test('should display project cards matching discovered packages (REQ-ENTRY-009)', async ({
+    page,
+  }) => {
     const projectCards = page.locator('.project-card');
-    await expect(projectCards).toHaveCount(5);
+
+    // Wait for cards to render (dynamic rendering)
+    await expect(projectCards.first()).toBeVisible();
+
+    // Verify count matches discovered packages
+    await expect(projectCards).toHaveCount(discoveredPackages.length);
   });
 
-  test('should display React Sample card with correct content', async ({ page }) => {
-    const reactCard = page.locator('.project-card').filter({ hasText: 'React Sample' });
-    await expect(reactCard).toBeVisible();
-    await expect(reactCard.locator('h2')).toHaveText('React Sample');
-    await expect(reactCard.locator('p')).toContainText('Rsbuild로 구성된 React 애플리케이션');
+  test('each discovered package should have a card with correct content', async ({ page }) => {
+    for (const pkg of discoveredPackages) {
+      const card = page.locator('.project-card').filter({ hasText: pkg.name });
+      await expect(card).toBeVisible();
+      await expect(card.locator('h3')).toHaveText(pkg.name);
+      if (pkg.description) {
+        await expect(card.locator('p')).toContainText(pkg.description);
+      }
+    }
   });
 
-  test('should display Preact Sample card with correct content', async ({ page }) => {
-    const preactCard = page.locator('.project-card').filter({ hasText: 'Preact Sample' });
-    await expect(preactCard).toBeVisible();
-    await expect(preactCard.locator('h2')).toHaveText('Preact Sample');
-    await expect(preactCard.locator('p')).toContainText('경량화된 React 대안');
-  });
-
-  test('should display Next.js Sample card with correct content', async ({ page }) => {
-    const nextCard = page.locator('.project-card').filter({ hasText: 'Next.js Sample' });
-    await expect(nextCard).toBeVisible();
-    await expect(nextCard.locator('h2')).toHaveText('Next.js Sample');
-    await expect(nextCard.locator('p')).toContainText('풀스택 React 프레임워크');
-  });
-
-  test('should display Express Sample card with correct content', async ({ page }) => {
-    const expressCard = page.locator('.project-card').filter({ hasText: 'Express Sample' });
-    await expect(expressCard).toBeVisible();
-    await expect(expressCard.locator('h2')).toHaveText('Express Sample');
-    await expect(expressCard.locator('p')).toContainText('Node.js 웹 프레임워크');
-  });
-
-  test('should display NestJS Sample card with correct content', async ({ page }) => {
-    const nestCard = page.locator('.project-card').filter({ hasText: 'Nest.js Sample' });
-    await expect(nestCard).toBeVisible();
-    await expect(nestCard.locator('h2')).toHaveText('Nest.js Sample');
-    await expect(nestCard.locator('p')).toContainText('TypeScript 기반 서버사이드 프레임워크');
+  test('each discovered package card should have correct link', async ({ page }) => {
+    for (const pkg of discoveredPackages) {
+      const card = page.locator('.project-card').filter({ hasText: pkg.name });
+      await expect(card).toHaveAttribute('href', pkg.href);
+    }
   });
 
   test('should display footer with build information', async ({ page }) => {
@@ -76,6 +124,9 @@ test.describe('Entry Page - Landing Page (REQ-002)', () => {
 
   test('should have working hover effects on project cards', async ({ page }) => {
     const firstCard = page.locator('.project-card').first();
+
+    // Wait for card to be visible (dynamic rendering)
+    await expect(firstCard).toBeVisible();
 
     // Get initial styles
     await firstCard.hover();
@@ -93,35 +144,39 @@ test.describe('Entry Page - Landing Page (REQ-002)', () => {
     // Check that background contains gradient colors
     expect(backgroundColor).toBeTruthy();
   });
+});
 
-  test('React Sample card should have correct link', async ({ page }) => {
-    const reactCard = page.locator('.project-card').filter({ hasText: 'React Sample' });
-    const link = reactCard.locator('a');
-    await expect(link).toHaveAttribute('href', '/react-sample/index.html');
+test.describe('Entry Page - Dynamic Registry (REQ-ENTRY-009)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
   });
 
-  test('Preact Sample card should have correct link', async ({ page }) => {
-    const preactCard = page.locator('.project-card').filter({ hasText: 'Preact Sample' });
-    const link = preactCard.locator('a');
-    await expect(link).toHaveAttribute('href', '/preact-sample/index.html');
+  test('registry should contain at least one package', () => {
+    expect(discoveredPackages.length).toBeGreaterThan(0);
   });
 
-  test('Next.js Sample card should have correct link', async ({ page }) => {
-    const nextCard = page.locator('.project-card').filter({ hasText: 'Next.js Sample' });
-    const link = nextCard.locator('a');
-    await expect(link).toHaveAttribute('href', '/next-sample/index.html');
+  test('cards should be rendered dynamically from registry', async ({ page }) => {
+    // Wait for JavaScript to render cards
+    const cards = page.locator('.project-card');
+    await expect(cards.first()).toBeVisible();
+
+    // Verify each discovered package has a corresponding card
+    for (const pkg of discoveredPackages) {
+      const card = cards.filter({ hasText: pkg.name });
+      await expect(card).toBeVisible();
+    }
   });
 
-  test('Express Sample card should have correct link', async ({ page }) => {
-    const expressCard = page.locator('.project-card').filter({ hasText: 'Express Sample' });
-    const link = expressCard.locator('a');
-    await expect(link).toHaveAttribute('href', 'http://localhost:3001');
-  });
+  test('cards should be anchor elements for no-JS navigation (REQ-ENTRY-007)', async ({ page }) => {
+    const cards = page.locator('.project-card');
+    await expect(cards.first()).toBeVisible();
 
-  test('NestJS Sample card should have correct link', async ({ page }) => {
-    const nestCard = page.locator('.project-card').filter({ hasText: 'Nest.js Sample' });
-    const link = nestCard.locator('a');
-    await expect(link).toHaveAttribute('href', 'http://localhost:3002');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      const tagName = await card.evaluate((el) => el.tagName.toLowerCase());
+      expect(tagName).toBe('a');
+    }
   });
 });
 
@@ -133,9 +188,10 @@ test.describe('Entry Page - Responsive Design (AUDIENCE-DEVELOPER)', () => {
     const projectGrid = page.locator('.project-grid');
     await expect(projectGrid).toBeVisible();
 
-    // Cards should stack vertically on mobile
+    // Cards should render
     const cards = page.locator('.project-card');
-    await expect(cards).toHaveCount(5);
+    await expect(cards.first()).toBeVisible();
+    await expect(cards).toHaveCount(discoveredPackages.length);
   });
 
   test('should display multi-column layout on desktop', async ({ page }) => {
@@ -146,6 +202,7 @@ test.describe('Entry Page - Responsive Design (AUDIENCE-DEVELOPER)', () => {
     await expect(projectGrid).toBeVisible();
 
     const cards = page.locator('.project-card');
-    await expect(cards).toHaveCount(5);
+    await expect(cards.first()).toBeVisible();
+    await expect(cards).toHaveCount(discoveredPackages.length);
   });
 });

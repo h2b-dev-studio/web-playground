@@ -1,7 +1,12 @@
 {
   "name": "react-sample",
   "version": "1.0.0",
+  "description": "React 18 application built with Rsbuild",
   "private": true,
+  "playgroundMeta": {
+    "title": "React Sample",
+    "description": "Modern React patterns with hooks and TypeScript"
+  },
   "scripts": {
     "dev": "rsbuild dev",
     "build": "rsbuild build",
