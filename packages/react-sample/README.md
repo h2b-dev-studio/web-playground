@@ -1,17 +1,22 @@
 # React Sample
 
-Modern React patterns with hooks and TypeScript.
+Interactive showcase demonstrating idiomatic React patterns with live demos, props manipulation, and code viewing.
 
-## Features
+## Patterns
 
-- React 18 with concurrent features
-- TypeScript with strict mode
-- Built with Rsbuild
+| Category | Patterns |
+|----------|----------|
+| Composition | Compound Components, Render Props, Composition vs Inheritance |
+| State | Custom Hooks, Controlled vs Uncontrolled, Context + Reducer, Lifting State Up |
 
-## Development
+## Scripts
 
 ```bash
-pnpm dev        # Start dev server
-pnpm build      # Build for production
-pnpm clean      # Clean build artifacts
+pnpm dev     # Start dev server
+pnpm build   # Build to dist/react-sample/
+pnpm clean   # Clean dist/
 ```
+
+## Structure
+
+See `spec/react-sample.design.md` for detailed component architecture.

@@ -21,6 +21,23 @@ documents:
     status: verified
     version: 1.2.0
     owner: human
+  react-sample.design:
+    status: verified
+    version: 1.0.0
+    owner: sdd-design
+    sections:
+      component-architecture:
+        status: verified
+        owner: sdd-design-frontend
+      uiux:
+        status: verified
+        owner: sdd-design-uiux
+      security:
+        status: verified
+        owner: sdd-design-security
+      perf:
+        status: verified
+        owner: sdd-design-perf
   entry.foundation:
     status: verified
     version: 1.1.0
