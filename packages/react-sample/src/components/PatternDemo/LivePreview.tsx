@@ -2,7 +2,7 @@
  * LivePreview - Renders the pattern demo with error boundary
  * @derives REQ-REACT-001, REQ-REACT-004
  */
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense } from 'react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Pattern } from '../../types/props';
 
@@ -18,6 +18,8 @@ import { Demo as LiftingStateUpDemo } from '../../patterns/lifting-state-up/Demo
 interface LivePreviewProps {
   pattern: Pattern;
   props: Record<string, unknown>;
+  editedCode?: string;
+  activeHook?: string;
 }
 
 const demoComponents: Record<string, React.ComponentType<Record<string, unknown>>> = {
@@ -30,15 +32,22 @@ const demoComponents: Record<string, React.ComponentType<Record<string, unknown>
   'lifting-state-up': LiftingStateUpDemo as React.ComponentType<Record<string, unknown>>,
 };
 
-export function LivePreview({ pattern, props }: LivePreviewProps) {
+export function LivePreview({ pattern, props, editedCode, activeHook }: LivePreviewProps) {
   const DemoComponent = demoComponents[pattern.id];
 
-  const content = useMemo(() => {
-    if (!DemoComponent) {
-      return <p>Demo not found for pattern: {pattern.id}</p>;
-    }
-    return <DemoComponent {...props} />;
-  }, [DemoComponent, pattern.id, props]);
+  if (!DemoComponent) {
+    return (
+      <div data-testid="live-preview" className="live-preview">
+        <p>Demo not found for pattern: {pattern.id}</p>
+      </div>
+    );
+  }
+
+  // Create a unique key for custom-hooks to force remount when code changes
+  // This ensures React hooks are re-initialized with new values
+  const demoKey = pattern.id === 'custom-hooks' && editedCode
+    ? `${pattern.id}-${editedCode.length}-${editedCode.slice(0, 50)}`
+    : pattern.id;
 
   return (
     <div data-testid="live-preview" className="live-preview">
@@ -50,7 +59,12 @@ export function LivePreview({ pattern, props }: LivePreviewProps) {
         }
       >
         <Suspense fallback={<div className="preview-loading">Loading...</div>}>
-          {content}
+          <DemoComponent
+            key={demoKey}
+            {...props}
+            editedCode={editedCode}
+            activeHook={activeHook}
+          />
         </Suspense>
       </ErrorBoundary>
     </div>

@@ -943,49 +943,110 @@ body {
 
   .pattern-demo > .demo-content {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Demo area comes first, then playground */
+  .demo-area {
+    order: 0;
   }
 
   .props-playground {
-    order: -1;
+    order: 1;
   }
 }
 
 @media (max-width: 767px) {
   .app-header {
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-xs) var(--space-sm);
   }
 
   .app-header h1 {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .app-subtitle {
+    display: none;
+  }
+
+  .app-sidebar {
+    max-height: 80px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--space-xs);
   }
 
   .app-content {
-    padding: var(--space-md);
+    padding: var(--space-sm);
   }
 
   .pattern-list {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--space-xs);
   }
 
   .pattern-category {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .category-title {
+    display: none;
   }
 
   .category-patterns {
-    flex-direction: column;
+    flex-direction: row;
+    gap: var(--space-xs);
+  }
+
+  .pattern-card {
+    padding: var(--space-xs) var(--space-sm);
+    min-height: 36px;
+    white-space: nowrap;
+  }
+
+  .demo-header {
+    margin-bottom: var(--space-sm);
   }
 
   .demo-title {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .pattern-demo > .demo-description {
+    display: none;
+  }
+
+  .demo-category {
+    display: none;
   }
 
   .pattern-demo > .demo-content {
-    gap: var(--space-md);
+    gap: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-area {
+    padding: var(--space-sm);
+    order: 0;
+  }
+
+  .props-playground {
+    order: 1;
+  }
+
+  .live-preview {
+    min-height: 120px;
   }
 
   .code-panel {
-    margin: 0 calc(-1 * var(--space-md));
+    margin: 0 calc(-1 * var(--space-sm));
     border-radius: 0;
     border-left: none;
     border-right: none;

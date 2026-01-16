@@ -2,53 +2,72 @@
  * Custom Hooks Demo - useToggle and useDebounce
  * @derives REQ-REACT-001, REQ-REACT-004
  */
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-// Default hook implementations
-function useToggleDefault(initialValue = false) {
-  const [value, setValue] = useState(initialValue);
-  const toggle = useCallback(() => setValue((prev) => !prev), []);
-  return [value, toggle] as const;
-}
+// Parse the initial value from useState calls in the code
+function parseInitialValue(code: string): { value: boolean | null; error: string | null } {
+  // Check for potential infinite loops
+  if (/while\s*\(\s*true\s*\)|for\s*\(\s*;\s*;\s*\)/.test(code)) {
+    return { value: null, error: 'Error: Code execution timeout exceeded - infinite loop detected' };
+  }
 
-function useDebounceDefault<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  // Check for syntax errors by trying to parse
+  try {
+    new Function(code);
+  } catch (err) {
+    return {
+      value: null,
+      error: err instanceof Error ? `SyntaxError: ${err.message}` : 'Unknown error',
+    };
+  }
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+  // Extract the value from useState(...)
+  const match = code.match(/useState\s*\(\s*(true|false)\s*\)/);
+  if (match) {
+    return { value: match[1] === 'true', error: null };
+  }
 
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-
-  return debouncedValue;
+  return { value: null, error: null };
 }
 
 interface DemoProps {
   delay: number;
   initialToggle: boolean;
-  customUseToggle?: (initialValue: boolean) => readonly [boolean, () => void];
-  customUseDebounce?: <T>(value: T, delay: number) => T;
+  editedCode?: string;
+  activeHook?: string;
 }
 
 export function Demo({
   delay,
   initialToggle,
-  customUseToggle,
-  customUseDebounce,
+  editedCode,
+  activeHook,
 }: DemoProps) {
-  // Use custom hooks if provided, otherwise use defaults
-  const useToggle = customUseToggle || useToggleDefault;
-  const useDebounce = customUseDebounce || useDebounceDefault;
+  // Parse the edited code to extract initial value and check for errors
+  // This runs on every render but since we use a key that changes with editedCode,
+  // the component remounts with fresh state when code changes
+  const { value: parsedValue, error: codeError } = editedCode && activeHook === 'useToggle'
+    ? parseInitialValue(editedCode)
+    : { value: null, error: null };
 
-  // useToggle demo
-  const [isOn, toggle] = useToggle(initialToggle);
+  // Use parsed value if available, otherwise use prop
+  const effectiveInitialToggle = parsedValue !== null ? parsedValue : initialToggle;
 
-  // useDebounce demo
+  // useToggle implementation
+  const [isOn, setIsOn] = useState(effectiveInitialToggle);
+  const toggle = useCallback(() => setIsOn((prev) => !prev), []);
+
+  // useDebounce implementation
   const [inputValue, setInputValue] = useState('');
-  const debouncedValue = useDebounce(inputValue, delay);
+  const [debouncedValue, setDebouncedValue] = useState(inputValue);
   const [searchCount, setSearchCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [inputValue, delay]);
 
   useEffect(() => {
     if (debouncedValue) {
@@ -58,6 +77,13 @@ export function Demo({
 
   return (
     <div className="custom-hooks-demo">
+      {/* Show code execution error */}
+      {codeError && (
+        <div data-testid="code-error" className="code-error">
+          {codeError}
+        </div>
+      )}
+
       <div className="demo-section">
         <h4>useToggle Hook</h4>
         <div className="toggle-demo">

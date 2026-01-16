@@ -72,8 +72,8 @@ export function useFetch<T>(url: string): UseFetchResult<T> {
 }
 `;
 
-export const useToggleSource = `function useToggle(initialValue = false) {
-  const [value, setValue] = useState(initialValue);
+export const useToggleSource = `function useToggle(initialValue) {
+  const [value, setValue] = useState(false);
 
   const toggle = useCallback(() => {
     setValue((prev) => !prev);

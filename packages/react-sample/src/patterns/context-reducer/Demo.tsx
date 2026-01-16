@@ -110,7 +110,8 @@ interface DemoProps {
 export function Demo({ theme }: DemoProps) {
   return (
     <div className="context-reducer-demo">
-      <ThemeProvider initialTheme={theme}>
+      {/* Key forces re-mount when theme prop changes */}
+      <ThemeProvider key={theme} initialTheme={theme}>
         <div className="demo-content">
           <ThemedBox />
           <ThemeInfo />
