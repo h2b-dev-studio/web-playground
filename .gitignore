@@ -8,6 +8,9 @@ build/
 .next/
 out/
 
+# Generated files
+entry/src/generated/
+
 # Environment variables
 .env
 .env.local

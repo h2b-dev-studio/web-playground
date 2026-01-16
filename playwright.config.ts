@@ -67,24 +67,10 @@ export default defineConfig({
   ],
 
   // Web server configuration
-  webServer: [
-    {
-      command: 'npm run dev:entry',
-      url: 'http://localhost:5173',
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-    {
-      command: 'npm run dev:express',
-      url: 'http://localhost:3001/health',
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-    {
-      command: 'npm run dev:nest',
-      url: 'http://localhost:3002/health',
-      reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
-    },
-  ],
+  webServer: {
+    command: 'npm run dev:entry',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
 });
