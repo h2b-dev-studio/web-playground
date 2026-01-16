@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "generate:registry": "tsx ../scripts/generate-registry.ts",
+    "dev": "pnpm generate:registry && vite",
+    "build": "pnpm generate:registry && tsc && vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist src/generated"
   },
   "devDependencies": {
+    "tsx": "^4.16.2",
     "typescript": "^5.5.4",
     "vite": "^5.4.0"
   }

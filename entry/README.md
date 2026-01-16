@@ -1,16 +1,18 @@
 # Entry
 
-Landing page for web-playground. Built with vanilla TypeScript and Vite.
+Landing page for Web Playground that dynamically lists all sample packages.
 
-## Scripts
+## Features
+
+- Dynamic package discovery from `packages/` directory
+- Build-time registry generation (REQ-ENTRY-009)
+- Responsive grid layout
+- Works without JavaScript (anchor-based navigation)
+
+## Development
 
 ```bash
-pnpm dev     # Start dev server
-pnpm build   # Build to dist/
-pnpm clean   # Clean dist/
+pnpm dev        # Start dev server
+pnpm build      # Build for production
+pnpm clean      # Clean build artifacts
 ```
-
-## Structure
-
-- `src/main.ts` - Entry point
-- `index.html` - HTML template

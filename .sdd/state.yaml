@@ -40,15 +40,15 @@ documents:
         owner: sdd-design-perf
   entry.foundation:
     status: verified
-    version: 1.0.0
+    version: 1.1.0
     owner: claude
   entry.requirements:
     status: verified
-    version: 1.0.0
+    version: 1.1.0
     owner: claude
   entry.design:
     status: verified
-    version: 1.0.0
+    version: 1.1.0
     owner: claude
 
 current_phase: design
