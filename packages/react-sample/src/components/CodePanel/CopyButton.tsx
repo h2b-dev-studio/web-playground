@@ -1,0 +1,34 @@
+/**
+ * CopyButton - Copy code to clipboard with feedback
+ * @derives REQ-REACT-003
+ */
+import React, { useState, useCallback } from 'react';
+
+interface CopyButtonProps {
+  text: string;
+}
+
+export function CopyButton({ text }: CopyButtonProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }, [text]);
+
+  return (
+    <button
+      data-testid="copy-button"
+      onClick={handleCopy}
+      className={`copy-button ${copied ? 'copy-button--copied' : ''}`}
+      aria-label={copied ? 'Copied!' : 'Copy code'}
+    >
+      {copied ? 'Copied!' : 'Copy'}
+    </button>
+  );
+}

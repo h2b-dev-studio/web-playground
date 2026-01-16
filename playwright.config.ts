@@ -26,7 +26,7 @@ export default defineConfig({
   // Shared settings for all tests
   use: {
     // Base URL for page.goto('/')
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:4173',
 
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
@@ -66,11 +66,11 @@ export default defineConfig({
     },
   ],
 
-  // Web server configuration
+  // Web server configuration - uses preview mode for testing built output
   webServer: {
-    command: 'npm run dev:entry',
-    url: 'http://localhost:5173',
+    command: 'pnpm build && pnpm --filter entry run preview',
+    url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
+    timeout: 180 * 1000,
   },
 });

@@ -4,6 +4,7 @@ export default defineConfig({
   base: './',
   build: {
     outDir: '../dist',
-    emptyOutDir: true,
+    // Don't empty outDir - other packages build there too
+    emptyOutDir: false,
   },
 });
