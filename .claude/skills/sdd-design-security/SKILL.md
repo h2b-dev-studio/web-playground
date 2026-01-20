@@ -22,7 +22,7 @@ Write the Security Considerations section of a design document.
 
 ## Cross-Cutting Roles
 
-> **Note:** Cross-cutting concerns are an extension to sdd-guidelines for specialist coordination. See sdd-design for full mapping.
+> **Note:** Cross-cutting concerns are an extension to `doc/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
 
 Security is:
 - **Primary owner:** (none in typical frontend projects)
@@ -138,7 +138,7 @@ For non-obvious security choices:
 
 ### Step 10: Handoff
 
-Per sdd-guidelines §4.3 and §10.6.
+Per `doc/sdd-guidelines.md` §4.3 and §10.6.
 
 #### 1. Update Section Status
 

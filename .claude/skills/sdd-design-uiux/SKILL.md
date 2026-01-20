@@ -23,7 +23,7 @@ Write the UI/UX Design section of a design document.
 
 ## Cross-Cutting Roles
 
-> **Note:** Cross-cutting concerns are an extension to sdd-guidelines for specialist coordination. See sdd-design for full mapping.
+> **Note:** Cross-cutting concerns are an extension to `doc/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
 
 UI/UX is:
 - **Primary owner:** Accessibility, Loading states
@@ -161,7 +161,7 @@ For non-obvious choices:
 
 ### Step 11: Handoff
 
-Per sdd-guidelines §4.3 and §10.6.
+Per `doc/sdd-guidelines.md` §4.3 and §10.6.
 
 #### 1. Update Section Status
 

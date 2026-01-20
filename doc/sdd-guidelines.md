@@ -1,15 +1,14 @@
 ---
 title: "Spec-Driven Development: Guidelines"
 author: Claude
-date: 2025-01-12
-version: 4.4.0
+date: 2025-01-17
+version: 5.0.0
 status: draft
 tags: [SDD, Guidelines, Framework, Documentation]
-depends_on:
-  - sdd-philosophy-v5.md
 related:
   - sdd-practice.md (formats and procedures)
 changelog:
+  - v5.0.0: Restructured §3 Verification aligned to Philosophy v6 §4 - Two Dimensions (Traceability + Testing), Executable Specification, Abstraction Matching, Scope Direction; added @verifies link type
   - v4.4.0: Added §10 Multi-Agent Coordination - ownership model, locking, escalation, parallel execution
   - v4.3.0: Fixed link syntax, added assumption handling, clarified decision/gap locations, expanded recovery, enhanced example
   - v4.2.0: Consolidated redundancies, added versioning, verification results handling, customization points, minimal example
@@ -46,11 +45,18 @@ flowchart TD
         ASM[Assumptions<br/>ASM-001, ...]
     end
     
+    subgraph Tests["Executable Verification"]
+        BT[Behavioral Tests]
+        ST[Structural Tests]
+    end
+    
     REQ -->|"@aligns-to"| FA
     DES -->|"@derives"| REQ
     DES -.->|"@rationale"| DEC
     DES -.->|"@assumes"| ASM
     REQ -.->|"@rationale"| DEC
+    BT -->|"@verifies"| REQ
+    ST -.->|"(convention)"| DES
 ```
 
 ### Section Map
@@ -59,7 +65,7 @@ flowchart TD
 |---------|-------------------|---------|
 | 1. Artifacts | Definition (Existence + Decision) | What to create |
 | 2. Traceability | Definition (Existence + Decision) | How to link |
-| 3. Verification | Conditions (Verifiability) | How to check and respond |
+| 3. Verification | Verification (Traceability + Testing) | How to verify |
 | 4. State | Observer + Conditions | What to track |
 | 5. Change | Continuity | How to propagate |
 | 6. Recovery | Recovery | How to restore |
@@ -158,7 +164,7 @@ Supporting records externalize reasoning and assumptions. They are not artifacts
 
 **Purpose:** Externalizes reasoning — why choices were made.
 
-> Philosophy v5 §2.2: "A system can have perfect existence links yet lose integrity if decision reasoning is lost."
+> Philosophy v6 §2.2: "A system can have perfect existence links yet lose integrity if decision reasoning is lost."
 
 **When required:** Every non-obvious choice must have externalized reasoning.
 
@@ -228,6 +234,7 @@ Link types establish traceability chains.
 | `@assumes` | Any | Assumption | When applicable |
 | `@invalidated-by` | Assumption | Condition | When applicable |
 | `@supersedes` | Decision | Prior Decision | When replacing |
+| `@verifies` | Behavioral Test | Requirement | **Yes** |
 
 ### 2.2 Link Syntax
 
@@ -254,6 +261,15 @@ Rate limiting uses token bucket with configurable RPM.
 `@assumes:` ASM-002 (single-region deployment)
 ```
 
+**In Tests:**
+
+```python
+# @verifies: REQ-005
+def test_rate_limit_enforced():
+    """Verify API enforces rate limits per key."""
+    ...
+```
+
 **Reference formats:**
 - Same document: `#section-anchor` or `ID`
 - Other document: `./path/to/doc.md#anchor`
@@ -266,15 +282,28 @@ Rate limiting uses token bucket with configurable RPM.
 
 ## 3. Verification
 
-### 3.1 Verification Types
+> Philosophy v6 §4: "Integrity = Traceability + Testing"
 
-| Type | Question | Method |
-|------|----------|--------|
-| **Alignment** | Do requirements serve the foundation? | Heuristics (qualitative) |
-| **Traceability** | Is every design item justified? | Link verification (mechanical) |
-| **Consistency** | Do artifacts contradict each other? | Mixed |
+### 3.1 Two Dimensions
 
-### 3.2 Alignment Check (Foundation ↔ Requirements)
+Integrity verification requires two complementary approaches:
+
+| Dimension | Question | Method | Nature |
+|-----------|----------|--------|--------|
+| **Traceability** | Why does this exist? | Link verification | Static |
+| **Testing** | Does this work as intended? | Execution verification | Dynamic |
+
+Both are necessary:
+- Traceability alone: "Links exist" — but maybe code doesn't work
+- Testing alone: "Code works" — but maybe it shouldn't exist
+
+---
+
+### 3.2 Traceability Verification
+
+Static verification that links exist and are valid.
+
+#### 3.2.1 Alignment Check (Foundation ↔ Requirements)
 
 **Heuristics:**
 
@@ -285,7 +314,7 @@ Rate limiting uses token bucket with configurable RPM.
 | Non-contradiction | Consistent with constraints | Violates constraint |
 | Terminology | Uses Foundation's terms | Conflicting terms |
 
-### 3.3 Traceability Check (Requirements ↔ Design)
+#### 3.2.2 Derivation Check (Requirements ↔ Design)
 
 **Mechanical checks:**
 
@@ -295,7 +324,7 @@ Rate limiting uses token bucket with configurable RPM.
 | `@derives` target exists | Lookup REQ-ID |
 | `@rationale` exists | Check non-obvious items |
 
-**Depth criteria for "implements target":**
+**Depth criteria:**
 
 | Depth | Meaning | When to use |
 |-------|---------|-------------|
@@ -303,31 +332,142 @@ Rate limiting uses token bucket with configurable RPM.
 | Satisfies | Design item fully covers requirement | Verified phase |
 | Testable | Acceptance criteria defined and passable | Pre-implementation |
 
-### 3.4 Consistency Check
+#### 3.2.3 Consistency Check
 
 | Check | Vertical | Horizontal |
 |-------|----------|------------|
 | Non-contradictory | No conflict with source | No conflict with siblings |
 | Terminology | Uses source's terms | Consistent with siblings |
 
-### 3.5 Verification Triggers
+---
+
+### 3.3 Test Verification
+
+Dynamic verification that artifacts work as intended.
+
+#### 3.3.1 Executable Specification
+
+> Philosophy v6 §4.2: "Tests are executable specifications — externalized, verifiable criteria for correctness."
+
+**Principle:** Verification criteria must be externalized as executable tests.
+
+```
+Before: "This code is correct" (in developer's head)
+After:  "This test passes" (externalized, executable)
+```
+
+**Write behavioral tests before implementation** — prevents tests from being shaped by solution.
+
+#### 3.3.2 Abstraction Matching
+
+Each artifact level requires different verification:
+
+| Artifact | Answers | Verification Type |
+|----------|---------|-------------------|
+| Foundation | What is this? | Human judgment |
+| Requirements | What must it do? | Behavioral (black-box) |
+| Design | How will it do it? | Structural (white-box) |
+| Implementation | (Realizes Design) | (Structural tests) |
+
+**Foundation verification:**
+- No automated tests — identity cannot be tested mechanically
+- Human judgment determines: "Is this what we intend to build?"
+- Occurs during initial review and when Foundation changes
+
+**Note:** Implementation is not a separate artifact. Code requires no independent traceability — it is verified through tests, not links.
+
+**Why matching matters:**
+
+- Requirements define WHAT — verification must confirm behavior exists, independent of implementation
+- Design defines HOW — verification must confirm the specific structure works
+
+**Cross-level mismatch problems:**
+
+| Mismatch | Problem |
+|----------|---------|
+| Structural test → Requirements | Implementation change breaks test (false negative) |
+| Behavioral test → Design | Design change goes undetected (false positive) |
+
+#### 3.3.3 Requirements Tests
+
+**Link:** `@verifies: REQ-NNN` (required)
+
+**Characteristics:**
+- Black-box (no implementation knowledge)
+- E2E or integration level
+- Stable across refactoring
+
+**Example:**
+
+```python
+# @verifies: REQ-001
+def test_user_can_create_task():
+    """User can create a task with title."""
+    task = api.create_task(title="Buy milk")
+    assert task in api.list_tasks()
+```
+
+#### 3.3.4 Design Tests
+
+**Link:** Implicit (by directory convention)
+
+**Characteristics:**
+- White-box (tests specific structure)
+- Unit level
+- Changes when design changes
+
+**Convention:**
+
+```
+src/auth/token_bucket.py  →  tests/unit/auth/test_token_bucket.py
+```
+
+**Example:**
+
+```python
+# Implicitly verifies Design §Token Bucket
+def test_token_bucket_refills_at_rate():
+    bucket = TokenBucket(capacity=10, refill_rate=1)
+    bucket.consume(10)
+    time.sleep(1)
+    assert bucket.available == 1
+```
+
+#### 3.3.5 Test Organization
+
+```
+tests/
+├── requirements/          # @verifies links required
+│   ├── test_req_001.py
+│   └── test_req_002.py
+├── unit/                  # mirrors src/ structure
+│   └── auth/
+│       └── test_token_bucket.py
+└── conftest.py
+```
+
+---
+
+### 3.4 Verification Process
+
+#### 3.4.1 Triggers
 
 | Point | Trigger | What to Verify |
 |-------|---------|----------------|
-| Requirements Complete | All REQs drafted | Alignment |
-| Design Complete | All design items drafted | Traceability |
-| Pre-Implementation | Before coding | Full consistency |
+| Foundation Complete | Foundation drafted or changed | Human judgment (§3.3.2) |
+| Requirements Complete | All REQs drafted | Alignment (§3.2.1) |
+| Design Complete | All design items drafted | Derivation (§3.2.2) |
+| Pre-Implementation | Before coding | Full traceability + behavioral test coverage |
 | Post-Change | After artifact modified | Affected items only |
 
-### 3.6 Handling Verification Results
+#### 3.4.2 Results Handling
 
-#### Pass
-
+**Pass:**
 - Update item status to `verified`
 - Record verification timestamp
 - Proceed to next item
 
-#### Fail — Self-Resolvable
+**Fail — Self-Resolvable:**
 
 Resolve without escalation when:
 
@@ -335,14 +475,15 @@ Resolve without escalation when:
 |---------|-----------|--------|
 | Missing `@derives` | Target clearly exists | Add link |
 | Missing `@aligns-to` | Anchor clearly exists | Add link |
+| Missing `@verifies` | Requirement clearly testable | Add test |
 | Terminology inconsistency | Meaning unambiguous | Standardize |
 | Missing `@rationale` | Choice is actually obvious | Document as obvious |
 
 After resolution: re-verify, then mark `verified`.
 
-#### Fail — Requires Escalation
+**Fail — Requires Escalation:**
 
-**Must escalate when:**
+Must escalate when:
 
 | Situation | Why |
 |-----------|-----|
@@ -352,17 +493,40 @@ After resolution: re-verify, then mark `verified`.
 | Resource or cost commitments | Authority required |
 | User intent ambiguity | Guessing is dangerous |
 | Missing artifact (not just link) | Scope decision needed |
+| Test reveals requirement gap | Requirements may need update |
 
-**Escalation process:**
-
+Escalation process:
 1. Document gap in state file
 2. Set item status to `blocked`
 3. Identify owner/resolver
 4. Continue with non-blocked items
 
-### 3.7 Gap Documentation
+#### 3.4.3 Scope Direction
 
-Gaps are tracked in the state file (see Practice for format).
+> Philosophy v6 §4.4: "Verification scope follows the dependency chain."
+
+```
+Foundation → Requirements → Design → Implementation
+   (Why)        (What)       (How)     (Code)
+
+        ────────────────────────────────→
+              downstream depends on upstream
+```
+
+| Change Location | Verification Required |
+|-----------------|----------------------|
+| Upstream (Foundation, Requirements) | Reverify all downstream |
+| Downstream (Design, Implementation) | Upstream unaffected if behavioral tests pass |
+
+This is why changing HOW without changing WHAT preserves integrity — if behavioral tests still pass, requirements are still met.
+
+Cross-reference: §5 Change Propagation for spec artifacts.
+
+---
+
+### 3.5 Gap Documentation
+
+Gaps are tracked in the state file.
 
 **Required fields:**
 
@@ -370,7 +534,7 @@ Gaps are tracked in the state file (see Practice for format).
 |-------|---------|
 | id | GAP-NNN identifier |
 | severity | critical / major / minor |
-| type | missing_requirement, missing_design, missing_rationale, broken_link, contradiction |
+| type | missing_requirement, missing_design, missing_rationale, broken_link, contradiction, missing_test |
 | location | Where gap was found |
 | blocking | What items are blocked |
 | owner | Who should resolve |
@@ -387,7 +551,7 @@ Gaps are tracked in the state file (see Practice for format).
 
 ## 4. State
 
-> Philosophy v5 §4: "Integrity must be maintainable by finite, forgetful, partial observers."
+> Philosophy v6 §5: "Integrity must be maintainable by finite, forgetful, partial observers."
 
 ### 4.1 What Must Be Externalized
 
@@ -395,6 +559,7 @@ Gaps are tracked in the state file (see Practice for format).
 |----------|-----|
 | Artifact status | Know what's complete vs. in-progress |
 | Verification results | Know what's been checked |
+| Test status | Know what's passing/failing |
 | Gaps | Know what's unresolved |
 | Session progress | Enable continuation |
 
@@ -438,6 +603,7 @@ stateDiagram-v2
 | In-progress items | What's started, what remains |
 | Blocked items | What's waiting, on what/whom |
 | Gaps | Unresolved issues |
+| Test status | Which tests passing/failing |
 | Next steps | Prioritized actions |
 
 **Completeness test:** New observer can start first next step without asking clarifying questions.
@@ -450,8 +616,8 @@ stateDiagram-v2
 
 ```
 Foundation change → Review Requirements (Alignment)
-Requirements change → Review Design (Traceability)
-Design change → Contained (unless reveals gap)
+Requirements change → Review Design (Derivation) + Tests (@verifies)
+Design change → Contained (unless reveals gap) + Update unit tests
 ```
 
 ### 5.2 Impact Scoping
@@ -461,9 +627,9 @@ Design change → Contained (unless reveals gap)
 | Anchor modified | REQs linking to it | Re-check alignment |
 | Anchor added | None immediate | May need new REQs |
 | Anchor deleted | REQs linking to it | REQs orphaned |
-| REQ modified | Design items deriving | Re-check traceability |
-| REQ deleted | Design items deriving | Design orphaned |
-| Design modified | Usually contained | Unless reveals gap |
+| REQ modified | Design items deriving + tests verifying | Re-check derivation, re-run tests |
+| REQ deleted | Design items deriving + tests verifying | Design/tests orphaned |
+| Design modified | Usually contained | Update unit tests |
 
 ### 5.3 Process
 
@@ -471,8 +637,9 @@ Design change → Contained (unless reveals gap)
 1. Identify changed item
 2. Find direct dependents (items linking to changed item)
 3. Re-verify each dependent
-4. If dependent changes → repeat from step 2
-5. Stop when no more changes
+4. If tests exist, run affected tests
+5. If dependent changes → repeat from step 2
+6. Stop when no more changes
 ```
 
 ---
@@ -485,6 +652,7 @@ Design change → Contained (unless reveals gap)
 |-------------|---------|
 | Design without `@derives` | (a) Find/create REQ, add link (b) Remove item |
 | REQ without `@aligns-to` | (a) Add alignment (b) Question if REQ belongs |
+| Test without `@verifies` | (a) Find REQ it tests (b) Reclassify as unit test |
 | Decision without context | (a) Reconstruct rationale (b) Mark `rationale: unknown (inherited)` |
 
 ### 6.2 Contradiction Recovery
@@ -502,6 +670,8 @@ When two artifacts contradict each other:
 
 3. **Propagate** — re-verify dependents of changed artifact
 
+4. **Re-run tests** — verify behavioral tests still pass
+
 ### 6.3 Broken Link Recovery
 
 When a link target doesn't exist:
@@ -518,7 +688,7 @@ When a link target doesn't exist:
 When `depends_on` version doesn't match actual:
 
 1. **Check changelog** — what changed between versions?
-2. **If MAJOR bump** — re-verify dependent completely
+2. **If MAJOR bump** — re-verify dependent completely, re-run all tests
 3. **If MINOR bump** — spot-check affected areas
 4. **If PATCH bump** — update version reference only
 5. **Update `depends_on`** — to current version after verification
@@ -529,6 +699,7 @@ When `depends_on` version doesn't match actual:
 2. **Document what exists** — actual state, not ideal
 3. **Build forward** — create integrity from now
 4. **Mark unknowns explicitly** — `@rationale: unknown (inherited)` is valid
+5. **Add tests incrementally** — start with highest-risk requirements
 
 ---
 
@@ -559,13 +730,21 @@ project/
 │   │   └── DEC-002.md
 │   └── assumptions/
 │       └── ASM-001.md
-└── auth-module/              ← subsystem
-    └── spec/
-        ├── auth.foundation.md
-        ├── auth.requirements.md
-        ├── auth.design.md
-        └── decisions/
-            └── DEC-AUTH-001.md
+├── tests/
+│   ├── requirements/
+│   │   └── test_req_001.py
+│   └── unit/
+│       └── ...
+└── auth-module/              ← subsystem
+    ├── spec/
+    │   ├── auth.foundation.md
+    │   ├── auth.requirements.md
+    │   ├── auth.design.md
+    │   └── decisions/
+    │       └── DEC-AUTH-001.md
+    └── tests/
+        ├── requirements/
+        └── unit/
 ```
 
 ### 7.3 Inheritance
@@ -577,6 +756,7 @@ project/
 | Constraints | Inherited without exception |
 | Terminology | Inherited; may extend, not redefine |
 | Decisions | Inherited unless explicitly overridden |
+| Test conventions | Inherited from parent |
 
 ---
 
@@ -628,15 +808,18 @@ When adapting these guidelines for a specific project:
 | Anchor prefixes | `SCOPE-`, `TONE-`, `CONSTRAINT-`, `DECISION-` | Domain has specific vocabulary |
 | REQ ID format | `REQ-{NNN}` | Need hierarchy or grouping |
 | Gap severity levels | critical/major/minor | Different triage needs |
-| Verification triggers | 4 defined | Different workflow cadence |
-| Escalation criteria | 5 conditions | Different authority model |
+| Verification triggers | 5 defined | Different workflow cadence |
+| Escalation criteria | 7 conditions | Different authority model |
 | Traceability depth | Addresses/Satisfies/Testable | Different rigor needs |
+| Test directory structure | `tests/requirements/`, `tests/unit/` | Framework conventions differ |
+| `@verifies` syntax | Comment in test file | Tooling requires different format |
 
 **What NOT to customize:**
 - Link types and their required status
 - Status definitions and transitions
 - Change propagation direction
 - Versioning scheme (MAJOR/MINOR/PATCH semantics)
+- Abstraction matching principle (behavioral → REQ, structural → Design)
 
 ---
 
@@ -671,12 +854,12 @@ When adapting these guidelines for a specific project:
 items:
   REQ-001:
     status: draft
-    owner: agent-planner    # current owner
+    owner: agent-planner
     locked: false
   REQ-002:
     status: blocked
     owner: agent-impl
-    locked: true            # being modified
+    locked: true
 ```
 
 **Owner field values:**
@@ -689,12 +872,11 @@ items:
 Before modifying, agent must lock:
 
 ```yaml
-# Lock acquisition
 items:
   REQ-001:
     locked: true
     locked_by: agent-impl
-    locked_at: 2025-01-12T10:00:00Z
+    locked_at: 2025-01-17T10:00:00Z
 ```
 
 **Rules:**
@@ -724,8 +906,8 @@ escalations:
     type: cross_boundary
     description: "Design §2 contradicts REQ-003 (owned by agent-planner)"
     items_affected: [design.section-2, REQ-003]
-    created: 2025-01-12T10:30:00Z
-    status: pending        # pending | resolved | dismissed
+    created: 2025-01-17T10:30:00Z
+    status: pending
 ```
 
 ### 10.5 Parallel Execution Rules
@@ -760,10 +942,10 @@ Standard handoff (§4.3) applies, plus:
 | `items_retained` | Items still owned (if partial handoff) |
 
 ```yaml
-# .sdd/handoffs/2025-01-12T10-00-agent-impl.yaml
+# .sdd/handoffs/2025-01-17T10-00-agent-impl.yaml
 from: agent-impl
 to: agent-reviewer
-timestamp: 2025-01-12T10:00:00Z
+timestamp: 2025-01-17T10:00:00Z
 
 items_transferred:
   - design.section-1
@@ -779,6 +961,11 @@ in_progress:
 
 blocked: []
 
+test_status:
+  passing: [test_req_001, test_req_002]
+  failing: []
+  missing: [test_req_003]
+
 escalations_opened:
   - ESC-001
 ```
@@ -791,6 +978,7 @@ escalations_opened:
 | **Contradiction** | Item A conflicts with Item B | Owner of downstream item escalates |
 | **Scope overlap** | Two agents believe they own same item | Escalate → orchestrator assigns single owner |
 | **Deadlock** | A waits on B, B waits on A | Orchestrator detects via dependency graph, reassigns |
+| **Test failure** | Behavioral test fails after change | Owner of changed artifact investigates |
 
 **Resolution authority:**
 
@@ -836,6 +1024,7 @@ flowchart LR
 - Checkpoint requires all relevant items `verified`
 - Agents wait at checkpoint until dependencies met
 - Orchestrator may force checkpoint with unverified items → those become `blocked`
+- Test agent can run independently once requirements/design exist
 
 ---
 
@@ -965,12 +1154,79 @@ interface Task {
 **Status:** draft
 ```
 
-### 11.4 State File Excerpt
+### 11.4 Tests
+
+**Requirements Tests** (`tests/requirements/`):
+
+```python
+# tests/requirements/test_req_001.py
+# @verifies: REQ-001
+
+def test_user_can_create_task_with_title():
+    """User can create a task with title."""
+    app = TaskManagerApp()
+    app.create_task(title="Buy milk")
+    
+    tasks = app.list_tasks()
+    assert any(t.title == "Buy milk" for t in tasks)
+
+def test_user_can_create_task_with_description():
+    """User can create a task with optional description."""
+    app = TaskManagerApp()
+    app.create_task(title="Buy milk", description="From corner store")
+    
+    task = app.get_task_by_title("Buy milk")
+    assert task.description == "From corner store"
+```
+
+```python
+# tests/requirements/test_req_002.py
+# @verifies: REQ-002
+
+def test_user_can_complete_task():
+    """User can mark a task as complete."""
+    app = TaskManagerApp()
+    app.create_task(title="Buy milk")
+    
+    app.complete_task("Buy milk")
+    
+    task = app.get_task_by_title("Buy milk")
+    assert task.completed is True
+```
+
+**Design Tests** (`tests/unit/`):
+
+```python
+# tests/unit/storage/test_local_storage.py
+# Implicitly verifies Design §Data Model
+
+def test_task_persists_to_localstorage():
+    """Tasks are stored as JSON in localStorage."""
+    storage = LocalStorageTaskStore()
+    storage.save(Task(id="1", title="Test", completed=False))
+    
+    raw = storage.get_raw()
+    assert '"id":"1"' in raw
+    assert '"title":"Test"' in raw
+
+def test_task_roundtrip():
+    """Task survives save/load cycle."""
+    storage = LocalStorageTaskStore()
+    original = Task(id="1", title="Test", completed=False)
+    
+    storage.save(original)
+    loaded = storage.load("1")
+    
+    assert loaded.id == original.id
+    assert loaded.title == original.title
+```
+
+### 11.5 State File Excerpt
 
 ```yaml
 # .sdd/state.yaml
 version: 1
-updated: 2025-01-12T10:00:00Z
+updated: 2025-01-17T10:00:00Z
 
 documents:
   foundation:
@@ -984,15 +1240,28 @@ documents:
   design:
     status: draft
 
+verification:
+  traceability:
+    alignment: passed
+    derivation: passed
+  tests:
+    requirements:
+      REQ-001: passing
+      REQ-002: passing
+      REQ-003: missing
+    design:
+      data_model: passing
+      keyboard_shortcuts: missing
+
 gaps:
   - id: GAP-001
     severity: minor
-    type: missing_requirement
-    location: design#keyboard-shortcuts
-    description: No requirement for keyboard shortcut discoverability (help screen?)
+    type: missing_test
+    location: REQ-003
+    description: No behavioral test for keyboard navigation
     blocking: []
     owner: unassigned
-    created: 2025-01-12
+    created: 2025-01-17
 ```
 
 ---
@@ -1013,3 +1282,4 @@ SDD adds overhead. Consider lighter approaches when:
 - Work spans multiple sessions
 - Decisions need to survive context loss
 - System will be maintained over time
+

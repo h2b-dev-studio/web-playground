@@ -194,4 +194,4 @@ When requirements are verified, proceed to design:
 
 ## Reference
 
-For full details: `.claude/skills/sdd-guidelines/reference/guidelines-v4.4.md` sections 1.2, 2, 3.2
+For full details: `doc/sdd-guidelines.md` sections 1.2, 2, 3

@@ -1,11 +1,12 @@
 ---
 title: "Spec-Driven Development: Philosophy"
 author: Claude
-date: 2025-01-08
-version: 5.0
+date: 2025-01-17
+version: 6.0.0
 status: draft
 tags: [SDD, Philosophy, Framework, Documentation]
 changelog:
+  - v6.0.0: Added Â§4 Verification - dual dimensions, executable specification, abstraction matching, scope direction
   - v5.0: Reorganized around core questions; added Observer, Continuity, Recovery
   - v4.0: Foundation/Requirements/Design, dual verification model
 ---
@@ -23,12 +24,13 @@ flowchart TD
     
     subgraph "How"
         C[Conditions: Externalize, Access, Verify]
+        V[Verification: Traceability + Testing]
         O[Observer: Finite, Handoff]
         T[Continuity: Time, Sessions, Change]
         R[Recovery: Detect, Restore]
     end
     
-    G --> D --> C --> O --> T --> R
+    G --> D --> C --> V --> O --> T --> R
 ```
 
 | Question | Section |
@@ -36,9 +38,10 @@ flowchart TD
 | What do we pursue? | 1. Integrity |
 | What is it? | 2. Definition |
 | What makes it possible? | 3. Conditions |
-| Who maintains it? | 4. Observer |
-| How does it persist? | 5. Continuity |
-| What if it breaks? | 6. Recovery |
+| How do we verify it? | 4. Verification |
+| Who maintains it? | 5. Observer |
+| How does it persist? | 6. Continuity |
+| What if it breaks? | 7. Recovery |
 
 ---
 
@@ -55,7 +58,7 @@ Why integrity matters:
 | Knowledge lives in people's heads | Knowledge is externalized and accessible |
 | AI guesses from code alone | AI follows explicit reasoning chains |
 
-Integrity is not documentation for its own sake. It is the foundation for trustworthy systems and effective collaboration—human or AI.
+Integrity is not documentation for its own sake. It is the foundation for trustworthy systems and effective collaborationâ€”human or AI.
 
 ---
 
@@ -68,7 +71,7 @@ Integrity has two dimensions:
 Every artifact can answer: **"Why do I exist?"**
 
 ```
-Design decision → derives from → Requirement → aligns to → Foundation
+Design decision â†’ derives from â†’ Requirement â†’ aligns to â†’ Foundation
 ```
 
 If an artifact cannot trace to its origin, it is unjustified. It may be correct, but we cannot know why.
@@ -100,7 +103,7 @@ If reasoning exists only in someone's head (or a lost context window), there is 
 
 ## 3. Conditions
 
-Integrity does not happen automatically. Three preconditions must be met:
+Integrity does not happen automatically. Three preconditions must be met.
 
 ### 3.1 Externalization
 
@@ -120,9 +123,9 @@ What stays internal (in someone's head, in a lost session) cannot be traced, ver
 
 Externalized information must be:
 
-- **Discoverable** — can be found when needed
-- **Readable** — can be understood by the observer
-- **Current** — reflects actual state, not historical snapshots
+- **Discoverable** â€” can be found when needed
+- **Readable** â€” can be understood by the observer
+- **Current** â€” reflects actual state, not historical snapshots
 
 Externalization without accessibility is documentation theater.
 
@@ -138,9 +141,95 @@ If you cannot verify integrity, you cannot trust it.
 
 ---
 
-## 4. Observer
+## 4. Verification
 
-### 4.1 No Omniscient Observer
+Verifiability (Â§3.3) establishes that integrity must be checkable. This section defines how verification works.
+
+### 4.1 Dual Dimensions
+
+Integrity verification requires two complementary approaches:
+
+| Dimension | Question | Method | Nature |
+|-----------|----------|--------|--------|
+| **Traceability** | Why does this exist? | Link verification | Static |
+| **Testing** | Does this work as intended? | Execution verification | Dynamic |
+
+Both are necessary:
+
+```
+Traceability alone: "Links exist" â€” but maybe code doesn't work
+Testing alone:      "Code works" â€” but maybe it shouldn't exist
+
+Integrity = Traceability + Testing
+```
+
+### 4.2 Executable Specification
+
+Â§3.1 states: "If it is not externalized, it does not exist for integrity purposes."
+
+This applies to verification criteria:
+
+```
+Before: "This code is correct" (in developer's head)
+After:  "This test passes" (externalized, executable)
+```
+
+Tests are executable specifications â€” externalized, verifiable criteria for correctness.
+
+Writing verification criteria before implementation prevents the test from being shaped by the solution.
+
+### 4.3 Abstraction Matching
+
+Each artifact answers a different question. Verification must match the abstraction level:
+
+| Artifact | Answers | Verification Type |
+|----------|---------|-------------------|
+| Foundation | What is this? | Human judgment |
+| Requirements | What must it do? | Behavioral (black-box) |
+| Design | How will it do it? | Structural (white-box) |
+| Implementation | (Realizes Design) | (Structural tests) |
+
+Implementation is not a separate artifact. Code requires no independent traceability.
+
+**Why matching matters:**
+
+Requirements define WHAT â€” verification must confirm behavior exists, independent of implementation.
+
+Design defines HOW â€” verification must confirm the specific structure works.
+
+Cross-level mismatch creates problems:
+
+| Mismatch | Problem |
+|----------|---------|
+| Structural test â†’ Requirements | Implementation change breaks test (false negative) |
+| Behavioral test â†’ Design | Design change goes undetected (false positive) |
+
+### 4.4 Scope Direction
+
+Verification scope follows the dependency chain:
+
+```
+Foundation â†’ Requirements â†’ Design â†’ Implementation
+   (Why)        (What)       (How)     (Code)
+
+        â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â†’
+              downstream depends on upstream
+```
+
+| Change Location | Verification Required |
+|-----------------|----------------------|
+| Upstream (Foundation, Requirements) | Reverify all downstream |
+| Downstream (Design, Implementation) | Upstream unaffected if behavioral tests pass |
+
+This is why changing HOW without changing WHAT preserves integrity â€” if behavioral verification still passes, requirements are still met.
+
+For how artifact changes trigger re-verification, see Â§6.3 Change Propagation.
+
+---
+
+## 5. Observer
+
+### 5.1 No Omniscient Observer
 
 Traditional documentation assumes an omniscient observer who:
 - Remembers all decisions ever made
@@ -157,7 +246,7 @@ In reality:
 
 **Integrity must be maintainable by finite, forgetful, partial observers.**
 
-### 4.2 Observer Requirements
+### 5.2 Observer Requirements
 
 Any observer (human or AI) must be able to:
 
@@ -170,7 +259,7 @@ Any observer (human or AI) must be able to:
 
 If the system requires omniscience, it will fail.
 
-### 4.3 Handoff
+### 5.3 Handoff
 
 When one observer transfers work to another:
 
@@ -180,18 +269,18 @@ When one observer transfers work to another:
 - Assumptions must be stated
 
 Handoff applies to:
-- Person → Person
-- Session → Session (same AI)
-- Agent → Agent (multi-agent)
-- Past self → Future self
+- Person â†’ Person
+- Session â†’ Session (same AI)
+- Agent â†’ Agent (multi-agent)
+- Past self â†’ Future self
 
 The mechanism varies. The requirement is constant.
 
 ---
 
-## 5. Continuity
+## 6. Continuity
 
-### 5.1 Across Time
+### 6.1 Across Time
 
 Integrity at time T does not guarantee integrity at time T+1.
 
@@ -205,7 +294,7 @@ Threats to temporal integrity:
 
 Integrity must be actively maintained, not assumed.
 
-### 5.2 Across Sessions and Agents
+### 6.2 Across Sessions and Agents
 
 Each session or agent has limited context. Integrity persists when:
 
@@ -215,12 +304,12 @@ Each session or agent has limited context. Integrity persists when:
 
 **The test:** Can a new observer, with no prior involvement, verify and continue the work using only externalized information?
 
-### 5.3 Change Propagation
+### 6.3 Change Propagation
 
 When something changes, integrity requires systematic propagation:
 
 ```
-Change in Origin → Re-verify Dependents → Update or Remove
+Change in Origin â†’ Re-verify Dependents â†’ Update or Remove
 ```
 
 Propagation rules:
@@ -233,13 +322,15 @@ Propagation rules:
 
 Change propagation is not a separate practice. It emerges from maintaining integrity over time.
 
+For verification scope during change, see Â§4.4 Scope Direction.
+
 ---
 
-## 6. Recovery
+## 7. Recovery
 
 Integrity will break. Systems are inherited incomplete. Changes introduce inconsistencies. Sessions end abruptly. The question is not whether, but when and how to respond.
 
-### 6.1 Detection
+### 7.1 Detection
 
 Broken integrity manifests as:
 
@@ -249,21 +340,22 @@ Broken integrity manifests as:
 | Broken links | Origin no longer exists or contradicts |
 | Missing reasoning | "Why" has no answer |
 | Contradictions | Parts conflict with each other |
+| Failing verification | Behavioral or structural tests fail |
 
 Detection requires active verification, not passive assumption.
 
-### 6.2 Restoration
+### 7.2 Restoration
 
 When integrity breaks:
 
-1. **Isolate** — Identify the scope of breakage
-2. **Trace** — Find what can still be verified
-3. **Reconstruct** — Re-establish missing links or reasoning
-4. **Verify** — Confirm integrity is restored
+1. **Isolate** â€” Identify the scope of breakage
+2. **Trace** â€” Find what can still be verified
+3. **Reconstruct** â€” Re-establish missing links or reasoning
+4. **Verify** â€” Confirm integrity is restored (both traceability and testing)
 
 Partial integrity is better than none. Restore incrementally.
 
-### 6.3 Inheriting Broken Systems
+### 7.3 Inheriting Broken Systems
 
 When you inherit a system without integrity:
 
@@ -273,5 +365,3 @@ When you inherit a system without integrity:
 - Build integrity forward, not backward
 
 Pretending integrity exists is worse than admitting it does not.
-
-
