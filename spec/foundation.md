@@ -1,6 +1,6 @@
 ---
 title: "Web Playground Foundation"
-version: 1.1.0
+version: 1.2.0
 status: verified
 ---
 
@@ -35,6 +35,7 @@ Enable developers to:
 - **QUALITY-IDIOMATIC:** Each sample follows its technology's community conventions and recommended patterns.
 - **QUALITY-TESTED:** Each sample includes tests using recommended testing tools and patterns for that technology.
 - **QUALITY-DOCUMENTED:** Code is self-explanatory. README per package explains technology-specific concepts.
+- **QUALITY-PERFORMANT:** Each sample demonstrates runtime performance best practices — efficient rendering, optimized bundle size, lazy loading, and other idiomatic optimizations for its technology.
 
 ### Audience
 
@@ -50,6 +51,7 @@ Enable developers to:
 - Testing infrastructure per package
 - Entry page linking all samples
 - Per-package documentation
+- Performance optimizations per technology
 
 ### Out of Scope
 
