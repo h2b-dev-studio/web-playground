@@ -3,7 +3,7 @@ name: sdd-skill-creator
 description: |
   Generate project-specific SDD skills for a repository.
   Use when: setting up SDD for a new project, customizing SDD for a domain,
-  creating repo-local skills that implement sdd-guidelines.
+  creating repo-local skills that implement `doc/sdd-guidelines.md`.
   Triggers: "create sdd skills", "setup sdd for project", "customize sdd"
 ---
 
@@ -14,7 +14,7 @@ Generate project-specific SDD skills that live in a repository.
 ## Prerequisites
 
 **You (the generator) must first:**
-1. Read `sdd-guidelines` (especially §1 Artifacts, §9 Customization Points, §10 Multi-Agent)
+1. Read `doc/sdd-guidelines.md` (especially §1 Artifacts, §9 Customization Points, §10 Multi-Agent)
 2. Have project context available
 
 Generated skills will be self-contained—their users won't need to read Guidelines.

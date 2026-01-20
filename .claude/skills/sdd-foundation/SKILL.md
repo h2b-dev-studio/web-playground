@@ -148,4 +148,4 @@ When foundation is verified, proceed to requirements:
 
 ## Reference
 
-For full details: `.claude/skills/sdd-guidelines/reference/guidelines-v4.4.md` section 1.1
+For full details: `doc/sdd-guidelines.md` section 1.1

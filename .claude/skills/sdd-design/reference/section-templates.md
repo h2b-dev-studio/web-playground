@@ -209,7 +209,7 @@ src/
 
 ## Decisions Log Entry Format
 
-Per sdd-guidelines §1.4:
+Per `doc/sdd-guidelines.md` §1.4:
 
 ```markdown
 | ID | Decision | Rationale | Owner |

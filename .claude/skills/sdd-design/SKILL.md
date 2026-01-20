@@ -120,7 +120,7 @@ Brief description of the design approach.
 
 ## Cross-Cutting Concerns
 
-> **Note:** Extension to sdd-guidelines for specialist coordination.
+> **Note:** Extension to `doc/sdd-guidelines.md` for specialist coordination.
 
 | Concern | Primary | Reviewer | Status |
 |---------|---------|----------|--------|
