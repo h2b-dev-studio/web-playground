@@ -1,10 +1,8 @@
 /**
  * Entry Page E2E Tests
  *
- * Verifies REQ-002: Entry Page - Landing page lists and links to all sample packages.
- * Verifies REQ-ENTRY-009: Dynamic Package Registry - Cards generated from packages/
- *
- * @derives REQ-002, REQ-ENTRY-009
+ * @verifies REQ-002 - Entry Page: Landing page lists and links to all sample packages.
+ * @verifies REQ-ENTRY-009 - Dynamic Package Registry: Cards generated from packages/
  * @aligns-to SCOPE-SHOWCASE, AUDIENCE-DEVELOPER
  */
 import { test, expect } from '@playwright/test';

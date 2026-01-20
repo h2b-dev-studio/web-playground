@@ -1,9 +1,9 @@
 ---
 title: "Web Playground Requirements"
-version: 1.2.0
+version: 1.3.0
 status: verified
 depends_on:
-  - foundation.md@1.1.0
+  - foundation.md@1.2.0
 ---
 
 # Web Playground Requirements
@@ -52,7 +52,7 @@ Landing page lists and links to all sample packages.
 
 ---
 
-## REQ-003: Package Standards
+## REQ-NF-001: Package Standards
 
 Every package follows baseline quality standards.
 
@@ -72,18 +72,44 @@ Every package follows baseline quality standards.
 
 ---
 
+## REQ-NF-002: Performance Standards
+
+Every package demonstrates runtime performance best practices appropriate to its technology.
+
+**Standards:**
+- Production build is optimized (minification, tree-shaking)
+- Bundle size is reasonable for the technology (no bloated dependencies)
+- README documents performance optimizations demonstrated
+
+**Package-specific patterns (examples):**
+- React: Component memoization, lazy loading, efficient re-renders
+- Vanilla: Minimal DOM manipulation, event delegation
+- Future packages: Technology-appropriate optimizations
+
+`@aligns-to:` QUALITY-PERFORMANT, QUALITY-MINIMAL, SCOPE-SHOWCASE
+
+**Status:** verified
+
+**Verification:**
+- `pnpm build` produces minified output
+- Bundle analyzer shows no unexpected large dependencies
+- README includes "Performance Optimizations" section
+
+---
+
 ## Coverage Matrix
 
 | Anchor | Requirements |
 |--------|--------------|
-| SCOPE-SHOWCASE | REQ-002 |
+| SCOPE-SHOWCASE | REQ-002, REQ-NF-002 |
 | SCOPE-INDEPENDENT | REQ-001 |
 | SCOPE-MONOREPO | REQ-001 |
 | SCOPE-WEB-TECH | *(package-level)* |
-| QUALITY-TYPESCRIPT | REQ-003 |
-| QUALITY-MINIMAL | *(package-level)* |
+| QUALITY-TYPESCRIPT | REQ-NF-001 |
+| QUALITY-MINIMAL | REQ-NF-002 |
 | QUALITY-IDIOMATIC | *(package-level)* |
-| QUALITY-TESTED | REQ-003 |
-| QUALITY-DOCUMENTED | REQ-003 |
+| QUALITY-TESTED | REQ-NF-001 |
+| QUALITY-DOCUMENTED | REQ-NF-001 |
+| QUALITY-PERFORMANT | REQ-NF-002 |
 | AUDIENCE-DEVELOPER | REQ-002 |
-| AUDIENCE-INTERMEDIATE | REQ-003 |
+| AUDIENCE-INTERMEDIATE | REQ-NF-001 |
