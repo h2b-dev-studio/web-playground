@@ -1,6 +1,6 @@
 # Traceability Verification
 
-> `doc/sdd-guidelines.md` §3.2: "Why does this exist?"
+> `docs/sdd-guidelines.md` §3.2: "Why does this exist?"
 
 Static verification that links exist and are valid.
 

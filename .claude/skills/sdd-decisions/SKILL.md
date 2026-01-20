@@ -8,7 +8,7 @@ description: |
 
 # SDD Decisions & Assumptions
 
-> `doc/sdd-guidelines.md` §1.4: "A system can have perfect existence links yet lose integrity if decision reasoning is lost."
+> `docs/sdd-guidelines.md` §1.4: "A system can have perfect existence links yet lose integrity if decision reasoning is lost."
 
 ## When to Document
 
@@ -200,5 +200,5 @@ When assumption proves false:
 
 ## References
 
-- `doc/sdd-guidelines.md` §1.4 Supporting Records
-- `doc/sdd-philosophy.md` §2.2 Decision
+- `docs/sdd-guidelines.md` §1.4 Supporting Records
+- `docs/sdd-philosophy.md` §2.2 Decision

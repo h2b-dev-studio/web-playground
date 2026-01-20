@@ -8,7 +8,7 @@ description: |
 
 # SDD Recovery
 
-> `doc/sdd-guidelines.md` §6: "Integrity will break. The question is not whether, but when and how to respond."
+> `docs/sdd-guidelines.md` §6: "Integrity will break. The question is not whether, but when and how to respond."
 
 ## Detection
 
@@ -280,7 +280,7 @@ depends_on:
 
 ## 5. Inheriting Broken Systems
 
-> `doc/sdd-philosophy.md` §7.3: "Pretending integrity exists is worse than admitting it does not."
+> `docs/sdd-philosophy.md` §7.3: "Pretending integrity exists is worse than admitting it does not."
 
 ### Principles
 
@@ -460,5 +460,5 @@ recovery:
 
 ## References
 
-- `doc/sdd-guidelines.md` §6 Recovery
-- `doc/sdd-philosophy.md` §7 Recovery
+- `docs/sdd-guidelines.md` §6 Recovery
+- `docs/sdd-philosophy.md` §7 Recovery
