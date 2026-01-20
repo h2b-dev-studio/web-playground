@@ -1,9 +1,9 @@
 ---
 title: "Web Playground Design"
-version: 1.0.0
+version: 1.1.0
 status: verified
 depends_on:
-  - requirements.md@1.1.0
+  - requirements.md@1.3.0
 ---
 
 # Web Playground Design
@@ -69,7 +69,7 @@ Each package contains:
 - `README.md` describing purpose and patterns
 - Source code in `src/`
 
-`@derives:` REQ-003
+`@derives:` REQ-NF-001
 `@rationale:` Consistent structure enables unified commands and sets clear expectations for contributors.
 
 **Status:** verified
@@ -80,7 +80,7 @@ Each package contains:
 
 Each package manages its own `tsconfig.json` with strict mode. No shared base config.
 
-`@derives:` REQ-003
+`@derives:` REQ-NF-001
 `@rationale:` Package independence over DRY:
              - Each technology may need different compiler options
              - Aligns with SCOPE-INDEPENDENT anchor
@@ -96,7 +96,7 @@ Each package manages its own `tsconfig.json` with strict mode. No shared base co
 
 Each package implements its own test setup using technology-appropriate tools.
 
-`@derives:` REQ-003
+`@derives:` REQ-NF-001
 `@rationale:` Technology-specific testing over unified framework:
              - React: Vitest + React Testing Library
              - Next.js: Jest (Next.js default)
@@ -113,11 +113,30 @@ Each package implements its own test setup using technology-appropriate tools.
 
 Playwright for cross-sample integration tests. Configuration at repository root.
 
-`@derives:` REQ-003
+`@derives:` REQ-NF-001
 `@rationale:` Playwright over Cypress:
              - Better TypeScript support
              - Multi-browser by default
              - Lighter weight for CI
+
+**Status:** verified
+
+---
+
+## Performance Build Strategy
+
+Each package's build tool configured for production optimization:
+- Minification enabled in production builds
+- Tree-shaking to eliminate dead code
+- Code splitting where technology supports it
+
+Package-specific optimizations documented in each package's README under "Performance Optimizations" section.
+
+`@derives:` REQ-NF-002
+`@rationale:` Build-time optimization over runtime optimization:
+             - Smaller bundle sizes improve load time
+             - Tree-shaking removes unused code automatically
+             - Each technology uses its idiomatic optimization approach
 
 **Status:** verified
 
@@ -185,7 +204,8 @@ Playwright for cross-sample integration tests. Configuration at repository root.
 | CLI Command Strategy | REQ-001 |
 | Build Output Structure | REQ-001, REQ-002 |
 | Entry Page Implementation | REQ-002 |
-| Package Structure Convention | REQ-003 |
-| TypeScript Configuration | REQ-003 |
-| Test Infrastructure | REQ-003 |
-| E2E Testing | REQ-003 |
+| Package Structure Convention | REQ-NF-001 |
+| TypeScript Configuration | REQ-NF-001 |
+| Test Infrastructure | REQ-NF-001 |
+| E2E Testing | REQ-NF-001 |
+| Performance Build Strategy | REQ-NF-002 |

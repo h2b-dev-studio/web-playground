@@ -88,7 +88,7 @@ Every package demonstrates runtime performance best practices appropriate to its
 
 `@aligns-to:` QUALITY-PERFORMANT, QUALITY-MINIMAL, SCOPE-SHOWCASE
 
-**Status:** draft
+**Status:** verified
 
 **Verification:**
 - `pnpm build` produces minified output

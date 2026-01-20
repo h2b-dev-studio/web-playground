@@ -1,6 +1,9 @@
 /**
  * Spec Compliance Check
- * Validates project structure against root specifications (REQ-001, REQ-003)
+ * Validates project structure against root specifications.
+ *
+ * @verifies REQ-001 - Monorepo CLI: Unified and targeted commands
+ * @verifies REQ-NF-001 - Package Standards: TypeScript strict, README, scripts
  *
  * Usage: pnpm check:spec
  */
@@ -60,8 +63,8 @@ check(scripts?.dev?.includes('pnpm -r'), 'Unified dev command');
 check(scripts?.test?.includes('pnpm -r'), 'Unified test command');
 check(!!scripts?.clean, 'Unified clean command');
 
-// REQ-003: TypeScript Strict Mode
-console.log('\nREQ-003: TypeScript Strict Mode');
+// REQ-NF-001: TypeScript Strict Mode
+console.log('\nREQ-NF-001: TypeScript Strict Mode');
 for (const pkg of PACKAGES) {
   const tsconfigPath = path.join(pkg, 'tsconfig.json');
   if (fs.existsSync(tsconfigPath)) {
@@ -73,8 +76,8 @@ for (const pkg of PACKAGES) {
   }
 }
 
-// REQ-003: Required Scripts
-console.log('\nREQ-003: Required Scripts');
+// REQ-NF-001: Required Scripts
+console.log('\nREQ-NF-001: Required Scripts');
 for (const pkg of PACKAGES) {
   const pkgJsonPath = path.join(pkg, 'package.json');
   if (fs.existsSync(pkgJsonPath)) {
@@ -87,8 +90,8 @@ for (const pkg of PACKAGES) {
   }
 }
 
-// REQ-003: README Documentation
-console.log('\nREQ-003: README Documentation');
+// REQ-NF-001: README Documentation
+console.log('\nREQ-NF-001: README Documentation');
 for (const pkg of PACKAGES) {
   check(fs.existsSync(path.join(pkg, 'README.md')), `${pkg} has README.md`);
 }
