@@ -2,11 +2,12 @@
 title: "Entry Requirements"
 author: Claude
 date: 2025-01-16
-version: 1.1.0
+version: 1.2.0
 status: verified
 depends_on:
-  - entry/spec/entry.foundation.md@1.1.0
+  - entry/spec/entry.foundation.md@1.2.0
 changelog:
+  - v1.2.0: Add root::QUALITY-PERFORMANT alignment to REQ-ENTRY-007 and REQ-ENTRY-008
   - v1.1.0: Add dynamic package registry requirement (REQ-ENTRY-009)
   - v1.0.0: Initial requirements for Entry landing page
 ---
@@ -153,7 +154,7 @@ Page functions with core navigation even without JavaScript.
 - Cards are anchor elements (`<a>`) with valid href
 - Navigation works via standard browser link behavior
 
-`@aligns-to:` TECH-STATIC, root::QUALITY-MINIMAL
+`@aligns-to:` TECH-STATIC, root::QUALITY-MINIMAL, root::QUALITY-PERFORMANT
 
 **Status:** verified
 
@@ -173,7 +174,7 @@ Entry module uses TypeScript with Vite for development and build.
 - Strict mode enabled in tsconfig.json
 - Output to `dist/` directory
 
-`@aligns-to:` root::QUALITY-TYPESCRIPT, TECH-VANILLA
+`@aligns-to:` root::QUALITY-TYPESCRIPT, TECH-VANILLA, root::QUALITY-PERFORMANT
 
 **Status:** verified
 
@@ -219,6 +220,7 @@ Package registry is generated at build time from workspace packages, not hard-co
 | root::QUALITY-TYPESCRIPT | REQ-ENTRY-008 |
 | root::QUALITY-MINIMAL | REQ-ENTRY-001, REQ-ENTRY-007, REQ-ENTRY-009 |
 | root::QUALITY-IDIOMATIC | REQ-ENTRY-004 |
+| root::QUALITY-PERFORMANT | REQ-ENTRY-007, REQ-ENTRY-008 |
 | root::AUDIENCE-DEVELOPER | REQ-ENTRY-002, REQ-ENTRY-005, REQ-ENTRY-006 |
 | TECH-VANILLA | REQ-ENTRY-008 |
 | TECH-STATIC | REQ-ENTRY-007 |
