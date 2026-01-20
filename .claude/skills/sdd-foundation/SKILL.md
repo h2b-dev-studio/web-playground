@@ -148,4 +148,4 @@ When foundation is verified, proceed to requirements:
 
 ## Reference
 
-For full details: `doc/sdd-guidelines.md` section 1.1
+For full details: `docs/sdd-guidelines.md` section 1.1

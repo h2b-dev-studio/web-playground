@@ -24,7 +24,7 @@ Write the Component Architecture section of a design document.
 
 ## Cross-Cutting Roles
 
-> **Note:** Cross-cutting concerns are an extension to `doc/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
+> **Note:** Cross-cutting concerns are an extension to `docs/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
 
 Frontend is:
 - **Primary owner:** Error handling, Code display, User input
@@ -170,11 +170,11 @@ Or inline for medium significance:
 @rationale: Chose X over Y — {reason connecting to REQ}
 ```
 
-See `doc/sdd-guidelines.md` §1.4 for when to use which format.
+See `docs/sdd-guidelines.md` §1.4 for when to use which format.
 
 ### Step 11: Handoff
 
-Per `doc/sdd-guidelines.md` §4.3 and §10.6.
+Per `docs/sdd-guidelines.md` §4.3 and §10.6.
 
 #### 1. Update Section Status
 

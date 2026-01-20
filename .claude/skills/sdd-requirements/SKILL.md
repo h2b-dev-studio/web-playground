@@ -194,4 +194,4 @@ When requirements are verified, proceed to design:
 
 ## Reference
 
-For full details: `doc/sdd-guidelines.md` sections 1.2, 2, 3
+For full details: `docs/sdd-guidelines.md` sections 1.2, 2, 3

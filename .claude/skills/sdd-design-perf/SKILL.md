@@ -23,7 +23,7 @@ Write the Performance Strategy section of a design document.
 
 ## Cross-Cutting Roles
 
-> **Note:** Cross-cutting concerns are an extension to `doc/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
+> **Note:** Cross-cutting concerns are an extension to `docs/sdd-guidelines.md` for specialist coordination. See sdd-design for full mapping.
 
 Perf is:
 - **Primary owner:** (none in typical frontend projects)
@@ -166,7 +166,7 @@ For library selections and trade-offs:
 
 ### Step 12: Handoff
 
-Per `doc/sdd-guidelines.md` §4.3 and §10.6.
+Per `docs/sdd-guidelines.md` §4.3 and §10.6.
 
 #### 1. Update Section Status
 

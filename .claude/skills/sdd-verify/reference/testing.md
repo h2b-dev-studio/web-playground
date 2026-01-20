@@ -1,6 +1,6 @@
 # Test Verification
 
-> `doc/sdd-guidelines.md` §3.3: "Does this work as intended?"
+> `docs/sdd-guidelines.md` §3.3: "Does this work as intended?"
 
 Dynamic verification that artifacts work as intended.
 

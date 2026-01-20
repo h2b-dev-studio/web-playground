@@ -146,4 +146,4 @@ Package specs in `packages/{pkg}/spec/`. Reference root with `root::` prefix:
 
 ## Reference
 
-For full details: `doc/sdd-guidelines.md` sections 4, 5, 8, 10
+For full details: `docs/sdd-guidelines.md` sections 4, 5, 8, 10

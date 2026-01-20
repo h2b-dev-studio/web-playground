@@ -8,7 +8,7 @@ description: |
 
 # SDD Verification
 
-> `doc/sdd-guidelines.md` §3: "Integrity = Traceability + Testing"
+> `docs/sdd-guidelines.md` §3: "Integrity = Traceability + Testing"
 
 ## Two Dimensions
 
@@ -192,4 +192,4 @@ verification:
 
 - [reference/traceability.md](reference/traceability.md) — Link verification details
 - [reference/testing.md](reference/testing.md) — Test verification details
-- `doc/sdd-guidelines.md` §3 for full specification
+- `docs/sdd-guidelines.md` §3 for full specification
