@@ -2,11 +2,13 @@
 title: "Entry Design"
 author: Claude
 date: 2025-01-16
-version: 1.1.0
+version: 1.3.0
 status: verified
 depends_on:
-  - entry/spec/entry.requirements.md@1.1.0
+  - entry/spec/entry.requirements.md@1.2.0
 changelog:
+  - v1.3.0: Add explicit root::QUALITY-PERFORMANT alignment in Performance Strategy
+  - v1.2.0: Update Performance Strategy to derive from QUALITY-PERFORMANT alignment
   - v1.1.0: Add dynamic package registry generation design (REQ-ENTRY-009)
 ---
 
@@ -317,6 +319,7 @@ Layer 3 (JS optional):   Future enhancements only
 ## Performance Strategy
 
 `@derives:` REQ-ENTRY-007, REQ-ENTRY-008
+`@aligns-to:` root::QUALITY-PERFORMANT (via REQ-ENTRY-007, REQ-ENTRY-008)
 
 ### Bundle Budget
 

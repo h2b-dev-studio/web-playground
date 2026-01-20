@@ -2,11 +2,13 @@
 title: "Entry Foundation"
 author: Claude
 date: 2025-01-16
-version: 1.1.0
+version: 1.2.0
 status: verified
 inherits:
-  - spec/foundation.md@1.1.0
+  - spec/foundation.md@1.2.0
 changelog:
+  - v1.2.0: Add root::QUALITY-PERFORMANT anchor inheritance
+  - v1.1.1: Update inherits reference to spec/foundation.md@1.2.0
   - v1.1.0: Add dynamic package registry requirement (build-time generation)
   - v1.0.0: Initial foundation for Entry landing page
 ---
@@ -33,6 +35,7 @@ Enable developers to:
 - root::QUALITY-TYPESCRIPT
 - root::QUALITY-MINIMAL
 - root::QUALITY-IDIOMATIC
+- root::QUALITY-PERFORMANT
 - root::AUDIENCE-DEVELOPER
 
 ## Identity Anchors
